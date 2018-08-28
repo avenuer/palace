@@ -1,14 +1,20 @@
 {
-    "compilerOptions": {
-        "outDir": "./built/",
-        "sourceMap": true,
-        "strict": true,
-        "module": "es2015",
-        "moduleResolution": "node",
-        "target": "es5",
-        "experimentalDecorators": true
+  "compilerOptions": {
+    "outDir": "./built/",
+    "sourceMap": true,
+    "strict": true,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "target": "es5",
+    "experimentalDecorators": true,
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "@elizer/members": ["libs/members"],
+      "@elizer/shared": ["libs/platform-shared"]
     },
-    "include": [
-        "./src/**/*"
-    ]
+    "baseUrl": "."
+  },
+  "include": ["./src/**/*", "./libs/**/*"]
 }
