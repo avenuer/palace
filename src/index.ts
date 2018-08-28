@@ -1,21 +1,23 @@
-import Vue from "vue";
-import HelloComponent from "./components/Hello.vue";
-import HelloDecoratorComponent from "./components/HelloDecorator.vue";
+import Vue from 'vue';
+import Vuetify from 'vuetify';
+import HelloDecoratorComponent from './components/HelloDecorator.vue';
+import ElizerNavBar from './shared/navbar.vue';
 
-let v = new Vue({
-    el: "#app",
+Vue.use(Vuetify);
+
+const v = new Vue({
+    el: '#app',
     template: `
     <div>
+
         Name: <input v-model="name" type="text">
-        <h1>Hello Component</h1>
-        <hello-component :name="name" :initialEnthusiasm="5" />
         <h1>Hello Decorator Component</h1>
         <hello-decorator-component :name="name" :initialEnthusiasm="5" />
         </div>
     `,
-    data: { name: "World" },
+    data: { name: 'World' },
     components: {
-        HelloComponent,
-        HelloDecoratorComponent
-    }
+        ElizerNavBar,
+        HelloDecoratorComponent,
+    },
 });
