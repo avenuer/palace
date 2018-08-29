@@ -1,10 +1,10 @@
 import { ApiMethod, EntityModelNames, CrudMethod, ApiStatus } from "./constant";
-import * as uuid from 'uuid/v1'
+import * as uuid from "uuid/v1";
 
-interface BaseResponse {
-    time: number;
-    status: ApiStatus;
-    reqId: string;
+export interface BaseResponse {
+  time: number;
+  status: ApiStatus;
+  reqId: string;
 }
 
 export interface ApiFormat<T, K> {
@@ -15,19 +15,23 @@ export interface ApiFormat<T, K> {
   headers: K;
 }
 
-export function apiFactory<T, K>(method: ApiMethod | CrudMethod, data: T, headers: K): ApiFormat<T, K> {
+export function apiFactory<T, K>(
+  method: ApiMethod | CrudMethod,
+  data: T,
+  headers: K
+): ApiFormat<T, K> {
   return {
     method,
     data,
     headers,
     event: EventBus.Request,
-    id: uuid(),
-  }
+    id: uuid()
+  };
 }
 
 export enum EventBus {
-  Request = 'Request',
-  Response = 'Response'
+  Request = "Request",
+  Response = "Response"
 }
 
 export interface FindQueryParams {

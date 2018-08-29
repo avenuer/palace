@@ -1,7 +1,8 @@
-import { ApiFormat, CrudMethod, ModelHeaders } from "@elizer/shared";
-import { create, find, retrieve, remove, update } from "./orm";
-import electronDB from "libs/rxdb/electron";
-import { throwError } from "@elizer/screwbox";
+import { ApiFormat, CrudMethod, ModelHeaders } from '@elizer/shared';
+import { create, find, retrieve, remove, update } from './orm';
+// tslint:disable-next-line:import-name
+import electronDB from 'libs/rxdb/electron';
+import { throwError } from '@elizer/screwbox';
 
 const { Create, Delete, Update, Retrieve, Find } = CrudMethod;
 export const ormRoutes = [Create, Delete, Update, Retrieve, Find];

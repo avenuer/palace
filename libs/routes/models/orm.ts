@@ -1,4 +1,4 @@
-import { RxCollection, RxQuery, RxDocument, RxError } from "rxdb";
+import { RxCollection, RxQuery, RxDocument, RxError } from 'rxdb';
 import {
   ApiFormat,
   ModelHeaders,
@@ -7,35 +7,35 @@ import {
   BaseModel,
   FindQueryResponse,
   ApiStatus,
-  OtherQueryResponse
-} from "@elizer/shared";
-import { to } from "await-to-js";
+  OtherQueryResponse,
+} from '@elizer/shared';
+import { to } from 'await-to-js';
 import {
   updateBaseModel,
   defaultPreInsert,
-  EmbeddedRxDBError
-} from "@elizer/rxdb";
-import { map } from "rxjs/operators";
-import { throwError } from "@elizer/screwbox";
+  EmbeddedRxDBError,
+} from '@elizer/rxdb';
+import { map } from 'rxjs/operators';
+import { throwError } from '@elizer/screwbox';
 
 export type FindQueryApi = ModelHeaders<Partial<FindQueryParams>>;
 
 const fQD: FindQueryParams = {
   limit: 15,
   skip: 0,
-  sort: "id"
+  sort: 'id',
 };
 
 export async function find<T>(
   koll: RxCollection<T>,
-  ctx: ApiFormat<any, FindQueryApi>
+  ctx: ApiFormat<any, FindQueryApi>,
 ): Promise<FindQueryResponse<T>> {
   try {
     const param: Partial<T> =
-      typeof ctx.data === "object" ? ctx.data : ({} as any);
+      typeof ctx.data === 'object' ? ctx.data : ({} as any);
     const query = koll.find(koll);
     const total = await countQuery<T>(query);
-    let headers = ctx.headers.query || {};
+    const headers = ctx.headers.query || {};
     const data = await findQuery<T>(query, { ...fQD, ...headers } as any);
     return {
       data,
@@ -44,7 +44,7 @@ export async function find<T>(
       limit: fQD.limit,
       skip: fQD.skip,
       status: ApiStatus.Success,
-      time: Date.now()
+      time: Date.now(),
     };
   } catch (error) {
     return {
@@ -54,14 +54,14 @@ export async function find<T>(
       total: 0,
       error: new EmbeddedRxDBError(error).message,
       status: ApiStatus.Failure,
-      time: Date.now()
+      time: Date.now(),
     };
   }
 }
 
 async function findQuery<T>(
   query: RxQuery<T, RxDocument<T, {}>[]>,
-  custom: FindQueryParams
+  custom: FindQueryParams,
 ) {
   return await query
     .sort(custom.sort)
@@ -79,34 +79,32 @@ const noDocError = new Error(`document requested missing or not available`);
 
 export async function retrieve<T>(
   koll: RxCollection<T>,
-  ctx: ApiFormat<any, any>
+  ctx: ApiFormat<string, any>,
 ): Promise<OtherQueryResponse<T>> {
   try {
-    const data: Partial<T> =
-      typeof ctx.data === "object" ? ctx.data : ({} as any);
-    const doc = await koll.findOne(data).exec();
-    if (!doc) {
-      throwError(noDocError);
-    }
+    const doc = await koll
+      .findOne({ id: ctx.data })
+      .exec()
+      .then(e => e ? e.toJSON() : throwError(noDocError));
     return {
-      data: data as any,
+      data: doc as any,
       reqId: ctx.id,
       status: ApiStatus.Success,
-      time: Date.now()
+      time: Date.now(),
     };
   } catch (error) {
     return {
       error: new EmbeddedRxDBError(error).message,
       reqId: ctx.id,
       status: ApiStatus.Failure,
-      time: Date.now()
+      time: Date.now(),
     };
   }
 }
 
 export async function create<T>(
   koll: RxCollection<T>,
-  ctx: ApiFormat<T, any>
+  ctx: ApiFormat<T, any>,
 ): Promise<OtherQueryResponse<T>> {
   try {
     const data = defaultPreInsert(ctx.data);
@@ -115,14 +113,14 @@ export async function create<T>(
       data: newData.toJSON(),
       reqId: ctx.id,
       status: ApiStatus.Success,
-      time: Date.now()
+      time: Date.now(),
     };
   } catch (error) {
     return {
       error: new EmbeddedRxDBError(error).message,
       reqId: ctx.id,
       status: ApiStatus.Failure,
-      time: Date.now()
+      time: Date.now(),
     };
   }
 }
@@ -131,7 +129,7 @@ const noIdError = new Error(`Id is required for update`);
 
 export async function update<T extends BaseModel>(
   koll: RxCollection<T>,
-  ctx: ApiFormat<T, UpdateQueryApi>
+  ctx: ApiFormat<T, UpdateQueryApi>,
 ) {
   try {
     const updatedDoc = await koll.upsert(updateBaseModel<T>(ctx.data));
@@ -139,32 +137,32 @@ export async function update<T extends BaseModel>(
       data: updatedDoc.toJSON(),
       reqId: ctx.id,
       status: ApiStatus.Success,
-      time: Date.now()
+      time: Date.now(),
     };
   } catch (error) {
     return {
       error: new EmbeddedRxDBError(error).message,
       reqId: ctx.id,
       status: ApiStatus.Failure,
-      time: Date.now()
+      time: Date.now(),
     };
   }
 }
 export async function remove<T extends BaseModel>(
   koll: RxCollection<T>,
-  ctx: ApiFormat<T, UpdateQueryApi>
+  ctx: ApiFormat<string, UpdateQueryApi>,
 ) {
   try {
-    if (ctx.data && ctx.data.id) {
+    if (ctx.data && ctx.data) {
       const doc = await koll
-        .findOne({ id: ctx.data.id })
+        .findOne({ id: ctx.data })
         .exec()
         .then(e => (e ? e.remove() : false));
       return {
         data: doc,
         reqId: ctx.id,
         status: ApiStatus.Success,
-        time: Date.now()
+        time: Date.now(),
       };
     }
     throwError(noIdError);
@@ -173,7 +171,7 @@ export async function remove<T extends BaseModel>(
       error: new EmbeddedRxDBError(error).message,
       reqId: ctx.id,
       status: ApiStatus.Failure,
-      time: Date.now()
+      time: Date.now(),
     };
   }
 }
