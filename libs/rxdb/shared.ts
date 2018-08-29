@@ -1,4 +1,4 @@
-import { BaseModel } from '@dilta/models/src/models';
+import { BaseModel } from '@elizer/shared';
 import * as uuidRandom from 'uuid/v4';
 
 export const baseModel = {
@@ -16,13 +16,12 @@ export const baseModel = {
     updatedAt: {
       type: 'number',
     },
-    school: {
-      ref: 'school',
+    organization: {
       type: 'string',
       final: true,
     },
   },
-  required: ['hash', 'createdAt', 'updatedAt', 'school'],
+  required: ['hash', 'createdAt', 'updatedAt', 'organization'],
 };
 
 /**
@@ -54,7 +53,7 @@ function generateBase<T extends BaseModel>(doc: T): BaseModel {
     createdAt: !doc.createdAt ? date : doc.createdAt,
     hash: doc.hash ? doc.hash : `${date.toString()}::${uuidRandom()}`,
     updatedAt: date,
-    school: doc.school,
+    organization: doc.organization,
   };
 }
 

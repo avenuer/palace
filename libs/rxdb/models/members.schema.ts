@@ -72,6 +72,6 @@ export const memberSchema = {
 };
 
 export const memberModel: CollectionConfig<typeof memberSchema> = {
-  name: EntityModelNames.Members,
+  name: EntityModelNames.Member,
   schema: memberSchema,
 };

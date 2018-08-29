@@ -7,14 +7,23 @@
     "moduleResolution": "node",
     "target": "es5",
     "experimentalDecorators": true,
+    "lib": ["es2017", "dom", "esnext.asynciterable"],
     "types": [
       "node"
     ],
+    "typeRoots": [
+      "typings",
+      "node_modules/@types"
+    ],
     "paths": {
       "@elizer/members": ["libs/members"],
-      "@elizer/shared": ["libs/platform-shared"]
+      "@elizer/shared": ["libs/platform-shared"],
+      "@elizer/routes": ["libs/routes"],
+      "@elizer/rxdb": ["libs/rxdb"],
+      "@elizer/screwbox": ["libs/screwbox"],
+      "@elizer/util": ["libs/util"]
     },
     "baseUrl": "."
   },
-  "include": ["./src/**/*", "./libs/**/*"]
+  "include": ["./src/**/*", "./libs/**/*", "typings/**/*", "main.ts"]
 }
