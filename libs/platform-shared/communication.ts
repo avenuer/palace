@@ -1,33 +1,38 @@
-import { ApiMethod, EntityModelNames, CrudMethod, ApiStatus } from "./constant";
-import * as uuid from 'uuid/v1'
+import { ApiMethod, EntityModelNames, CrudMethod, ApiStatus, FollowUpStatic } from "./constant";
+import * as uuid from "uuid/v1";
+import { Member } from "./models";
 
-interface BaseResponse {
-    time: number;
-    status: ApiStatus;
-    reqId: string;
+export interface BaseResponse {
+  time: number;
+  status: ApiStatus;
+  reqId: string;
 }
 
 export interface ApiFormat<T, K> {
   id: string;
-  method: ApiMethod | CrudMethod;
+  method: ApiMethod | CrudMethod | FollowUpStatic;
   data: T;
   event: EventBus;
   headers: K;
 }
 
-export function apiFactory<T, K>(method: ApiMethod | CrudMethod, data: T, headers: K): ApiFormat<T, K> {
+export function apiFactory<T, K>(
+  method: ApiMethod | CrudMethod | FollowUpStatic,
+  data: T,
+  headers: K
+): ApiFormat<T, K> {
   return {
     method,
     data,
     headers,
     event: EventBus.Request,
-    id: uuid(),
-  }
+    id: uuid()
+  };
 }
 
 export enum EventBus {
-  Request = 'Request',
-  Response = 'Response'
+  Request = "Request",
+  Response = "Response"
 }
 
 export interface FindQueryParams {
@@ -63,3 +68,7 @@ export interface ModelHeaders<T> {
 export type FindQueryApi = ModelHeaders<Partial<FindQueryParams>>;
 
 export type UpdateQueryApi = ModelHeaders<Partial<any>>;
+
+export interface MemberAttendanceQuery extends Member {
+  selectedDate?: number;
+}
