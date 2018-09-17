@@ -3,40 +3,35 @@
 <template>
 
 <div>
+<!-- v-model="member.valid" -->
 
-<v-form ref="form" v-model="valid" lazy-validation>
+<v-form ref="form"  lazy-validation>
     <!-- General Basic Bio-form start -->
     <v-text-field
-      v-model="name"
+      v-model="member.name"
       prepend-icon="person"
-      :rules="nameRules"
-      :counter="10"
       label="Full Name"
       required
     ></v-text-field>
     <v-text-field
-      v-model="email"
-      :rules="emailRules"
+      v-model="member.email"
       prepend-icon="email"
       label="E-mail"
     ></v-text-field>
     <v-text-field
-      v-model="phoneNo"
+      v-model="member.phoneNo"
       prepend-icon="contact_phone"
-      :rules="emailRules"
       label="Phone No"
       required
     ></v-text-field>
     <!-- General Basic Bio-form End -->
     <!-- Personal Details Bio-form start -->
-<v-date-picker v-model="date" no-title scrollable>
-          <v-spacer></v-spacer>
-          <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-          <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
-        </v-date-picker>
+    <v-date-picker v-model="picker" no-title scrollable>
+      <v-spacer></v-spacer>
+    </v-date-picker>
     <!-- calender for birthday -->
             <v-select
-      v-model="gender"
+      v-model="member.gender"
       :items="genders"
       prepend-icon="nature"
       :rules="[v => !!v || 'Item is required']"
@@ -46,48 +41,52 @@
         <!-- relation ship status -->
 
     <!-- Personal Details Bio-form end -->
-    <!-- student specific form Start-->
     <v-checkbox
-      v-model="isStudent"
+      v-model="member.isStudent"
       label="A Student?"
       required
     ></v-checkbox>
-        <v-text-field
-      v-model="department"
+    <!-- student specific form Start-->
+        <div v-if="member.isStudent">
+          <v-text-field
+      v-model="member.department"
       label="Department"
       prepend-icon="place"
     ></v-text-field>
         <v-text-field
-      v-model="level"
+      v-model="member.level"
       prepend-icon="my_location"
       label="Level"
     ></v-text-field>
         <v-text-field
-      v-model="school"
+      v-model="member.school"
       prepend-icon="school"
       label="University"
     ></v-text-field>
+        </div>
     <!-- student specific form End -->
     <!-- working class specific form start -->
-        <v-text-field
-      v-model="job"
+        <div v-if="!member.isStudent">
+          <v-text-field
+      v-model="member.job"
       prepend-icon="place"
       label="Job Title"
     ></v-text-field>
         <v-text-field
         prepend-icon="business_center"
-      v-model="workAddress"
+      v-model="member.workAddress"
       label="Work Address"
     ></v-text-field>
+        </div>
     <!-- working class specific form  end -->
     <!-- working follow-ip specific form  start -->
      <v-checkbox
-      v-model="checkbox"
+      v-model="member.checkbox"
       label="Visitor ?"
       required
     ></v-checkbox>
         <v-text-field
-      v-model="address"
+      v-model="member.address"
       prepend-icon="directions"
       label="Address"
       required
@@ -95,19 +94,22 @@
     <!-- working follow-ip specific form  end -->
     <!-- working Admin-specific operation  start -->
         <v-checkbox
-      v-model="checkbox"
+      v-model="manual"
       label="manual Numbering?"
     ></v-checkbox>
-        <v-text-field
-      v-model="churchNo"
+        <div v-if="manual">
+          <v-text-field
+      v-model="member.churchNo"
       type="number"
       label="Church Number"
     ></v-text-field>
+        </div>
     <!-- working  Admin-specific operation   end -->
 
     <v-btn
+    color="primary"
       :disabled="!valid"
-      @click="submit"
+      @click="submit(member)"
     >
       submit
     </v-btn>
@@ -119,40 +121,57 @@
 </template>
 
 <script lang="ts">
-import { Member } from '@elizer/members';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { format } from "date-fns";
+import { Member, DateFormat } from "@elizer/shared";
 
 @Component
 export default class ElizerMemberForm extends Vue {
-  @Prop() public member!: Member;
-  @Prop() public initialEnthusiasm!: number;
+  public date = Number(format(format(Date.now(), DateFormat), "x"));
 
-  public enthusiasm = this.initialEnthusiasm;
+  public manual = false;
 
-  public increment() {
-    this.enthusiasm++;
-  }
+  public member: Member = {} as any;
 
-  public decrement() {
-    if (this.enthusiasm > 1) {
-      this.enthusiasm--;
-    }
-  }
+  @Prop() public input!: Member;
 
+  /** hender format */
   get genders(): string[] {
-    return ['Female', 'Male'];
+    return ["Female", "Male"];
   }
 
-  get exclamationMarks(): string {
-    return '';
+  get valid() {
+    return (
+      this.member.name &&
+      this.member.gender &&
+      this.member.address &&
+      this.member.phoneNo &&
+      this.date
+    );
+  }
+
+  /** remap and emit the memer */
+  submit($event: Member) {
+    $event.day = Number(format(this.date, "DD"));
+    $event.month = format(this.date, "MMMM");
+    this.$emit('submit', $event);
+  }
+
+  clear() {}
+
+  get picker() {
+    return format(this.date, "YYYY-MM-DD");
+  }
+
+  set picker(date: string) {
+    this.date = Number(format(format(date, DateFormat), "x"));
+  }
+
+  mounted() {
+    this.member = { ...this.input };
   }
 }
 </script>
 
 <style>
-@import "~vuetify/dist/vuetify.min.css";
-
-.greeting {
-  font-size: 20px;
-}
 </style>

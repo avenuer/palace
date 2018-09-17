@@ -7,9 +7,12 @@ let win: BrowserWindow | null;
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({ width: 800, height: 600, show: false });
+  // off toolbars
+  win.setMenu(null);
 
   // and load the index.html of the app.
-  win.loadFile("index.html");
+  // win.loadFile("index.html");
+  win.loadURL(`http://localhost:3000`);
 
   // Open the DevTools.
   win.webContents.openDevTools();

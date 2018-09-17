@@ -1,16 +1,17 @@
 import { IpcRenderer, BrowserWindow } from 'electron';
 import { ApiFormat, EventBus, BaseResponse, ApiStatus } from '@elizer/shared';
 
-const REQUEST_TIME_OUT = 2000;
+// const REQUEST_TIME_OUT = 2000;
+const REQUEST_TIME_OUT = 200000;
 
 const ipc: IpcRenderer = (window as any).require('electron').ipcRenderer;
 
 export function renderEventBus<T extends BaseResponse>(
   ctx: ApiFormat<any, any>,
-) {
+): Promise<T> {
+  ipc.send(EventBus.Request, ctx);
+  console.log(ctx);
   return new Promise((resolve, rejects) => {
-    setTimeout(() => {
-      ipc.emit(EventBus.Request, ctx);
       ipc.on(EventBus.Response, (event: Event, response: T) => {
         if (response.reqId === ctx.id) {
           return resolve(response);
@@ -21,7 +22,6 @@ export function renderEventBus<T extends BaseResponse>(
         REQUEST_TIME_OUT - 200,
       );
     // tslint:disable-next-line:align
-    }, REQUEST_TIME_OUT);
   });
 }
 

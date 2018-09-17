@@ -13,7 +13,7 @@ export interface Member extends Partial<BaseModel> {
   email?: string;
   phoneNo: string;
   gender: string;
-  day: string;
+  day: number;
   month: string;
   isStudent: boolean;
   department?: string;
@@ -30,4 +30,9 @@ export interface Attendance extends Partial<BaseModel> {
     owner: string;
     date: number;
     attendance: typeof AttendanceStatus;
+}
+
+export interface Image extends Partial<BaseModel> {
+    owner: string;
+    link: string;
 }

@@ -6,33 +6,28 @@ import { baseModel, CollectionConfig } from '../shared';
 /**
  * subject record information and schema
  */
-export const attendanceSchema = {
-  title: 'attendance Schema',
+export const imageSchema = {
+  title: 'image Schema',
   version: 0,
-  description: 'stores various attendances',
+  description: 'stores various image',
   type: 'object',
   properties: {
+    link: {
+      type: 'string',
+    },
     owner: {
       type: 'string',
-      final: true,
-    },
-    date: {
-      type: 'number',
-    },
-    attendance: {
-      type: 'number',
     },
     ...baseModel.schema,
   },
   required: [
+    'link',
     'owner',
-    'date',
-    'attendance',
     ...baseModel.required,
   ],
 };
 
-export const attendanceModel: CollectionConfig<typeof attendanceSchema> = {
-  name: EntityModelNames.Attendance,
-  schema: attendanceSchema,
+export const imageModel: CollectionConfig<typeof imageSchema> = {
+  name: EntityModelNames.Image,
+  schema: imageSchema,
 };

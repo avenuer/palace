@@ -1,23 +1,29 @@
-import Vue from 'vue';
-import Vuetify from 'vuetify';
-import HelloDecoratorComponent from './components/HelloDecorator.vue';
-import ElizerNavBar from './shared/navbar.vue';
+import Vue from "vue";
+import Vuetify from "vuetify";
+import HelloDecoratorComponent from "./components/HelloDecorator.vue";
+import VueRouter, { RouteConfig } from "vue-router";
+import Notifications from 'vue-notification'
 
+
+import appRoutes from "./routes";
 Vue.use(Vuetify);
+Vue.use(VueRouter);
+Vue.use(Notifications);
 
 const v = new Vue({
-    el: '#app',
-    template: `
+  el: "#app",
+  router: appRoutes,
+  template: `
     <div>
 
         Name: <input v-model="name" type="text">
         <h1>Hello Decorator Component</h1>
         <hello-decorator-component :name="name" :initialEnthusiasm="5" />
         </div>
-    `,
-    data: { name: 'World' },
-    components: {
-        ElizerNavBar,
-        HelloDecoratorComponent,
-    },
-});
+        `,
+        data: { name: "World" },
+        components: {
+            HelloDecoratorComponent
+        }
+    });
+    

@@ -20,7 +20,7 @@ import { throwError } from '@elizer/screwbox';
 
 export type FindQueryApi = ModelHeaders<Partial<FindQueryParams>>;
 
-const fQD: FindQueryParams = {
+export const fQD: FindQueryParams = {
   limit: 15,
   skip: 0,
   sort: 'id',
@@ -32,8 +32,8 @@ export async function find<T>(
 ): Promise<FindQueryResponse<T>> {
   try {
     const param: Partial<T> =
-      typeof ctx.data === 'object' ? ctx.data : ({} as any);
-    const query = koll.find(koll);
+    typeof ctx.data === 'object' ? ctx.data : ({} as any);
+    const query = koll.find(param);
     const total = await countQuery<T>(query);
     const headers = ctx.headers.query || {};
     const data = await findQuery<T>(query, { ...fQD, ...headers } as any);
@@ -62,13 +62,13 @@ export async function find<T>(
 async function findQuery<T>(
   query: RxQuery<T, RxDocument<T, {}>[]>,
   custom: FindQueryParams,
-) {
+) {  
   return await query
     .sort(custom.sort)
     .skip(custom.skip)
     .limit(custom.limit)
     .exec()
-    .then(e => e.map(e => e.toJSON()));
+    .then(e => e.map(e => e.toJSON()))
 }
 
 async function countQuery<T>(query: RxQuery<T, RxDocument<T, {}>[]>) {
@@ -107,8 +107,7 @@ export async function create<T>(
   ctx: ApiFormat<T, any>,
 ): Promise<OtherQueryResponse<T>> {
   try {
-    const data = defaultPreInsert(ctx.data);
-    const newData = await koll.insert(ctx.data);
+    const newData = await koll.insert(defaultPreInsert(ctx.data));
     return {
       data: newData.toJSON(),
       reqId: ctx.id,

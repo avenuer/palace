@@ -1,5 +1,5 @@
 import { RxCollection, RxDatabase } from 'rxdb';
-import { Attendance, Member } from '@elizer/shared';
+import { Attendance, Member, Image } from '@elizer/shared';
 
 /**
  * export interface for the rxcollection provided
@@ -11,6 +11,7 @@ import { Attendance, Member } from '@elizer/shared';
 export interface OfflineDB {
   attendance: RxCollection<Attendance>;
   member: RxCollection<Member>;
+  image: RxCollection<Image>;
 }
 
 
@@ -22,4 +23,5 @@ export interface OfflineDB {
 export interface DBKollections extends RxDatabase {
   attendance: RxCollection<Attendance>;
   member: RxCollection<Member>;
+  image: RxCollection<Image>;
 }

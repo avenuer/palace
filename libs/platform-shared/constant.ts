@@ -1,6 +1,7 @@
 export enum EntityModelNames {
   Member = 'member',
   Attendance = 'attendance',
+  Image = 'image',
 }
 
 export enum AttendanceStatus {
@@ -28,3 +29,11 @@ export enum CrudMethod {
   Create = 'Create',
   Delete = 'Delete'
 }
+
+export enum FollowUpStatic {
+  Find = 'Followup-find',
+  Retrieve = 'Followup-retrieve'
+}
+
+// tslint:disable-next-line:variable-name
+export const DateFormat = "D-MMMM-YYYY";
