@@ -2,7 +2,7 @@
   "name": "typescript-vue-starter",
   "version": "1.0.0",
   "private": true,
-  "main": "./dist/main.js",
+  "main": "./dist/electron-main.js",
   "scripts": {
     "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "await-to-js": "^2.0.1",
+    "date-fns": "^1.29.0",
+    "file-loader": "^2.0.0",
     "global": "^4.3.2",
     "npm": "^6.4.0",
     "pino": "^5.4.0",
@@ -35,8 +37,8 @@
     "@types/lodash": "^4.14.116",
     "@types/node": "^10.9.2",
     "@types/uuid": "^3.4.3",
-    "@vue/cli-plugin-pwa": "^3.0.1",
     "@vue/cli-plugin-babel": "^3.0.1",
+    "@vue/cli-plugin-pwa": "^3.0.1",
     "@vue/cli-plugin-typescript": "^3.0.1",
     "css-loader": "^1.0.0",
     "electron": "^2.0.8",
@@ -44,12 +46,15 @@
     "happypack": "^5.0.0",
     "material-design-icons-iconfont": "^3.0.3",
     "node-sass": "^4.9.3",
+    "prettier": "^1.14.2",
     "sass-loader": "^7.1.0",
     "ts-loader": "^4.5.0",
     "ts-node": "^7.0.1",
     "tsconfig-paths": "^3.5.0",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.10.0",
+    "tslint-config-prettier": "^1.15.0",
     "tslint-microsoft-contrib": "^5.2.1",
     "typescript": "2.7",
     "vue-loader": "^15.4.1",
@@ -62,8 +67,8 @@
   "description": "",
   "keywords": [],
   "author": {
-    "name": "Daniel Rosenwasser",
-    "url": "https://github.com/DanielRosenwasser"
+    "name": "Abiodun Avenuer",
+    "url": "https://github.com/avenuer"
   },
   "license": "Apache-2.0"
 }

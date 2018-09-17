@@ -25,7 +25,7 @@ export const memberSchema = {
       type: 'string',
     },
     day: {
-      type: 'string',
+      type: 'number',
       default: 'none',
     },
     month: {

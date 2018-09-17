@@ -6,40 +6,37 @@
   <v-layout justify-center>
     <v-flex xs12 sm8>
       <v-card>
-        <v-card-title class="cyan darken-1">
-          <span class="headline white--text"> name Sarah Mcbeal</span>
+        <v-card-title color="indigo"  >
+          <span> {{ member.name }} </span>
 
           <v-spacer></v-spacer>
-          <v-btn dark icon>
-            churchNo
+          <v-btn icon>
+            {{ member.churchNo }}
           </v-btn>
+          <div v-if="actions" >
+            <v-btn  icon>
+              <v-icon @click="edit(member)">edit</v-icon>
+            </v-btn>
 
-          <v-btn dark icon>
-            <v-icon>chevron_left</v-icon>
-          </v-btn>
+            <v-btn  icon>
+              <v-icon @click="deleteMember(member)">delete</v-icon>
+            </v-btn>
+          </div>
 
-          <v-btn dark icon>
-            <v-icon>edit</v-icon>
-          </v-btn>
-
-          <v-btn dark icon>
-            <v-icon>more_vert</v-icon>
-          </v-btn>
         </v-card-title>
-
         <v-img
-          src="https://picsum.photos/700?image=996"
+          v-bind:src="image"
           height="200px"
         ></v-img>
 
                 <v-list>
-          <v-list-tile @click="">
+          <v-list-tile >
             <v-list-tile-action>
               <v-icon>mail</v-icon>
             </v-list-tile-action>
 
             <v-list-tile-content>
-              <v-list-tile-title>joe@email.com</v-list-tile-title>
+              <v-list-tile-title>{{ member.email }}</v-list-tile-title>
             </v-list-tile-content>
             <v-list-tile-action>
 
@@ -48,13 +45,13 @@
 
           <v-divider inset></v-divider>
 
-          <v-list-tile @click="">
+          <v-list-tile >
             <v-list-tile-action>
               <v-icon>phone</v-icon>
             </v-list-tile-action>
 
             <v-list-tile-content>
-              <v-list-tile-title>(323) 555-6789</v-list-tile-title>
+              <v-list-tile-title> {{ member.phoneNo }} </v-list-tile-title>
             </v-list-tile-content>
 
             <v-list-tile-action>
@@ -63,113 +60,120 @@
 
           <v-divider inset></v-divider>
 
-          <v-list-tile @click="">
+          <v-list-tile >
             <v-list-tile-action>
               <v-icon>cake</v-icon>
             </v-list-tile-action>
 
             <v-list-tile-content>
-              <v-list-tile-title> Birthday : Setup calender </v-list-tile-title>
+              <v-list-tile-title>{{ picker }} </v-list-tile-title>
             </v-list-tile-content>
-            <v-icon>calendar_today</v-icon>
+            <v-icon @click="calender = !calender">calendar_today</v-icon>
             <!-- calender -->
-                <!-- <v-date-picker :readonly="true" v-model="picker" :landscape="landscape" :reactive="reactive"></v-date-picker> -->
-
+                <v-date-picker v-if="calender" :readonly="true" v-model="picker"></v-date-picker>
           </v-list-tile>
 
 
           <v-divider inset></v-divider>
 
-         <v-list-tile @click="">
+         <v-list-tile >
             <v-list-tile-action>
               <v-icon>nature</v-icon>
             </v-list-tile-action>
 
             <v-list-tile-content>
-              <v-list-tile-title> male </v-list-tile-title>
+              <v-list-tile-title> {{ member.gender }} </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
 
           <v-divider inset></v-divider>
 
-         <v-list-tile @click="">
+        <!-- student details -->
+         <div  v-if="member.isStudent" >
+           <v-list-tile >
             <v-list-tile-action>
               <v-icon>place</v-icon>
             </v-list-tile-action>
 
             <v-list-tile-content>
-              <v-list-tile-title> department </v-list-tile-title>
+              <v-list-tile-title> {{ member.department }} </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
 
           <v-divider inset></v-divider>
-         <v-list-tile @click="">
+         <v-list-tile >
             <v-list-tile-action>
               <v-icon>my_location</v-icon>
             </v-list-tile-action>
 
             <v-list-tile-content>
-              <v-list-tile-title> level </v-list-tile-title>
+              <v-list-tile-title> {{ member.level }} </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
 
           <v-divider inset></v-divider>
 
-         <v-list-tile @click="">
+         <v-list-tile >
             <v-list-tile-action>
               <v-icon>school</v-icon>
             </v-list-tile-action>
 
             <v-list-tile-content>
-              <v-list-tile-title> University </v-list-tile-title>
+              <v-list-tile-title> {{ member.school }} </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
 
           <v-divider inset></v-divider>
+         </div>
+        <!-- student details End -->
+        <!--  working class start -->
 
-         <v-list-tile @click="">
+         <div v-if="!member.isStudent">
+           <v-list-tile >
             <v-list-tile-action>
               <v-icon>place</v-icon>
             </v-list-tile-action>
 
             <v-list-tile-content>
-              <v-list-tile-title> job </v-list-tile-title>
+              <v-list-tile-title> {{ member.job }} </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
 
           <v-divider inset></v-divider>
 
-         <v-list-tile @click="">
+         <v-list-tile >
             <v-list-tile-action>
               <v-icon>business_center</v-icon>
             </v-list-tile-action>
 
             <v-list-tile-content>
-              <v-list-tile-title> workAddress </v-list-tile-title>
+              <v-list-tile-title> {{ member.workAddress }} </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
 
           <v-divider inset></v-divider>
+         </div>
+          <!--  working class end -->
 
-         <v-list-tile @click="">
+         <v-list-tile >
             <v-list-tile-action>
               <v-icon>visibility</v-icon>
             </v-list-tile-action>
 
             <v-list-tile-content>
-              <v-list-tile-title> Vistor </v-list-tile-title>
+              <v-list-tile-title> {{ member.isVisitor }} </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
 
           <v-divider inset></v-divider>
 
-          <v-list-tile @click="">
+          <v-list-tile >
             <v-list-tile-action>
               <v-icon>location_on</v-icon>
             </v-list-tile-action>
 
             <v-list-tile-content>
-              <v-list-tile-title> Address Orlando, FL 79938</v-list-tile-title>
+              <v-list-tile-title> {{ member.address }} </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -182,40 +186,33 @@
 </template>
 
 <script lang="ts">
-import { Member } from "@elizer/members";
+import { Member } from '@elizer/shared';
 import { Component, Prop, Vue } from "vue-property-decorator";
+import { format } from 'date-fns';
 
 @Component
 export default class ElizerMemberBiodata extends Vue {
   @Prop() public member!: Member;
-  @Prop() public initialEnthusiasm!: number;
+  @Prop() public image!: string;
+  @Prop() public actions!: boolean;
+  @Prop() deleteMember!: Function;
+  @Prop() edit!: Function;
 
-  public enthusiasm = this.initialEnthusiasm;
-
-  public increment() {
-    this.enthusiasm++;
-  }
-
-  public decrement() {
-    if (this.enthusiasm > 1) {
-      this.enthusiasm--;
-    }
-  }
+  /** boolean to show calender dialog */
+  calender = false;
 
   get genders(): string[] {
     return ["Female", "Male"];
   }
 
-  get exclamationMarks(): string {
-    return "";
+  get picker() {
+    const currentYr = format(Date.now(), `YYYY`);
+    const date = new Date(`${currentYr}-${this.member.month}-${this.member.day}`);
+    return format(date, `YYYY-MM-DD`);
   }
 }
 </script>
 
 <style>
-@import "~vuetify/dist/vuetify.min.css";
 
-.greeting {
-  font-size: 20px;
-}
 </style>
