@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 dist/
 node_modules/
 
@@ -5,3 +6,17 @@ yarn-error.log
 typings
 
 test.ts
+=======
+.DS_Store
+dist/electron/*
+dist/web/*
+build/*
+!build/icons
+node_modules/
+npm-debug.log
+npm-debug.log.*
+thumbs.db
+!.gitkeep
+
+src/main/database.json
+>>>>>>> 699a0d9e3aee2d7923adb23b98efb94a81a91c95

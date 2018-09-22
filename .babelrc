@@ -1,5 +1,37 @@
 {
+<<<<<<< HEAD
   "presets": [
     "@vue/app"
   ]
 }
+=======
+  "comments": false,
+  "env": {
+    "main": {
+      "presets": [
+        ["env", {
+          "targets": { "node": 7 }
+        }],
+        "stage-0"
+      ]
+    },
+    "renderer": {
+      "presets": [
+        ["env", {
+          "modules": false
+        }],
+        "stage-0"
+      ]
+    },
+    "web": {
+      "presets": [
+        ["env", {
+          "modules": false
+        }],
+        "stage-0"
+      ]
+    }
+  },
+  "plugins": ["transform-runtime"]
+}
+>>>>>>> 699a0d9e3aee2d7923adb23b98efb94a81a91c95
