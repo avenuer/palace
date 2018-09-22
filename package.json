@@ -12,10 +12,11 @@
     "build:electron:main": "npx npm-run-all -s build:electron:modules watch:electron:webpack",
     "b:e:w": "npx webpack-cli --config=./configs/webpack.electron.js",
     "watch:electron:webpack": "npx webpack-cli --config=webpack.electron.js -w",
-    "build:electron:modules": "electron-rebuild -o keytar ursa"
+    "build:electron:modules": "electron-rebuild -o keytar leveldown ursa"
   },
   "dependencies": {
     "await-to-js": "^2.0.1",
+    "chart.js": "^2.7.2",
     "date-fns": "^1.29.0",
     "file-loader": "^2.0.0",
     "global": "^4.3.2",
@@ -34,6 +35,7 @@
     "vuetify": "^1.2.0"
   },
   "devDependencies": {
+    "@types/chart.js": "^2.7.35",
     "@types/lodash": "^4.14.116",
     "@types/node": "^10.9.2",
     "@types/uuid": "^3.4.3",
@@ -42,6 +44,7 @@
     "@vue/cli-plugin-typescript": "^3.0.1",
     "css-loader": "^1.0.0",
     "electron": "^2.0.8",
+    "electron-rebuild": "^1.8.2",
     "faker": "^4.1.0",
     "happypack": "^5.0.0",
     "material-design-icons-iconfont": "^3.0.3",

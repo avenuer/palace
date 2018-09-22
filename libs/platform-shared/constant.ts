@@ -32,7 +32,8 @@ export enum CrudMethod {
 
 export enum FollowUpStatic {
   Find = 'Followup-find',
-  Retrieve = 'Followup-retrieve'
+  Retrieve = 'Followup-retrieve',
+  MemberGraph = 'Followup-member-graph',
 }
 
 // tslint:disable-next-line:variable-name

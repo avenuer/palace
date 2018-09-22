@@ -1,4 +1,4 @@
-import electronDB from 'libs/rxdb/electron';
+import electronDB from "libs/rxdb/electron";
 import {
   FollowUpStatic,
   ApiFormat,
@@ -7,32 +7,50 @@ import {
   EntityModelNames,
   FindQueryResponse,
   ApiStatus,
-  MemberAttendanceQuery
-} from '@elizer/shared';
-import { find, fQD } from './models/orm';
-import { DBKollections } from '../rxdb/interface';
-import { memberAttendMaps, MembersAttendance } from 'libs/followup/attendance';
+  MemberAttendanceQuery,
+  OtherQueryResponse,
+  Attendance,
+  MemberFollowUpGraph
+} from "@elizer/shared";
+import { find, fQD } from "./models/orm";
+import { DBKollections } from "../rxdb/interface";
+import { memberAttendMaps, MembersAttendance } from "libs/followup/attendance";
+import { attendanceStatusDaysIntervals } from "../followup";
+import { count } from "rxjs/operators";
+import { RxDocument } from "rxdb";
 
-const { Find, Retrieve } = FollowUpStatic;
+const { Find, Retrieve, MemberGraph } = FollowUpStatic;
 
 // routes navigable by setting ctx: method
-export const followupRoutes = [Find, Retrieve];
+export const followupRoutes = [Find, Retrieve, MemberGraph];
 
 /**
  * the follow up routes for attendance statics
  *
  * @param {ApiFormat<any, Partial<FindQueryParams>>} ctx
  */
-export async function followUpRoutes(ctx: ApiFormat<any, Partial<FindQueryParams>>) {
+export async function followUpRoutes(
+  ctx: ApiFormat<any, any>
+) {
   const [err, db] = await electronDB;
   switch (ctx.method) {
     case Find:
       return await membersStatic(db, ctx);
+    case MemberGraph:
+      return await memberGraphAttendance(db, ctx);
     default:
       break;
   }
 }
 
+
+/**
+ * mapps the status per date selected for followup home page
+ *
+ * @param {DBKollections} db
+ * @param {ApiFormat<MemberAttendanceQuery, Partial<FindQueryParams>>} ctx
+ * @returns {Promise<FindQueryResponse<MembersAttendance>>}
+ */
 async function membersStatic(
   db: DBKollections,
   ctx: ApiFormat<MemberAttendanceQuery, Partial<FindQueryParams>>
@@ -83,4 +101,46 @@ async function attendances(db: DBKollections, members: Member[]) {
     .find({})
     .exec()
     .then(e => e.map(e => e.toJSON()));
+}
+
+
+export async function memberGraphAttendance(
+  db: DBKollections,
+  ctx: ApiFormat<MemberFollowUpGraph, any>
+): Promise<OtherQueryResponse<Partial<Attendance>[]>> {
+  const { data } = ctx;
+  const count = data.count || 5;
+  const interval = data.interval || 7;
+  const date = data.selectedDate || Date.now();
+  
+  try {
+    const attendance = selectAttendanceCount(
+      await db.attendance.find({ owner: data.ownerId }).exec(),
+      count
+    );
+    return {
+      data: attendanceStatusDaysIntervals(attendance, count, date, interval),
+      reqId: ctx.id,
+      status: ApiStatus.Success,
+      time: Date.now()
+    };
+  } catch (error) {
+    return {
+      error: (error as Error).message,
+      reqId: ctx.id,
+      status: ApiStatus.Failure,
+      time: Date.now()
+    };
+  }
+}
+
+/** sorts and selectes a portion of the attendance array */
+function selectAttendanceCount(
+  attendance: RxDocument<Attendance, {}>[],
+  count: number
+) {
+  return attendance
+    .map(attends => attends.toJSON())
+    .sort((a, b) => b.date - a.date)
+    .splice(0, count);
 }
