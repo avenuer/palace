@@ -18,6 +18,7 @@ global.dialog = dialog;
 
 PouchDB.plugin(require('pouchdb-find'));
 global.memberDB = new PouchDB(path.join(process.env.PALACE_PROJECT, 'database'));
+// global.memberDB.bulkDocs(require('./database.json')).then(console.log).catch(console.log);
 
 let mainWindow;
 const winURL = process.env.NODE_ENV === 'development'

@@ -13,6 +13,7 @@ export default {
   // format Date
   /** calculates and return an array of sundays from the present day */
   calculateSundaysBack(sundayCount) {
+    console.log(sundayCount);
     const lastSundayDate = moment().subtract(moment().day(), 'day');
     const sundays = [lastSundayDate.toISOString()];
     for (let i = 1; i < sundayCount; i++) { // eslint-disable-line
@@ -30,6 +31,10 @@ export default {
     logs.debug({ member: member.sundays, sundays });
     member.name = member.firstName + member.lastName;
     member.sundays = member.sundays.splice(member.sundays.length - sundays.length);
+    const today = moment();
+    if (today.weekday() === 0) {
+      member.sundays.push(today.toString());
+    }
     member.sundays = member.sundays.map(e => formatDate(moment(e)).date);
     sundays = sundays.map(e => formatDate(moment(e)).date);
     const diff = difference(sundays, member.sundays); // days not present

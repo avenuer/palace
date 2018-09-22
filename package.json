@@ -61,7 +61,7 @@
     "axios": "^0.16.2",
     "chart.js": "^2.7.2",
     "js-logger": "^1.4.1",
-    "leveldown": "^3.0.0",
+    "leveldown": "^3.0.2",
     "moment": "^2.21.0",
     "pouchdb": "^6.4.3",
     "pouchdb-find": "^6.4.3",
@@ -70,10 +70,12 @@
     "vue-chartjs": "^3.3.1",
     "vue-electron": "^1.0.6",
     "vue-router": "^2.5.3",
+    "vuejs-paginate": "^1.9.3",
     "vuex": "^2.3.1",
     "winston": "^2.4.1"
   },
   "devDependencies": {
+    "@types/node": "^10.5.2",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.1",

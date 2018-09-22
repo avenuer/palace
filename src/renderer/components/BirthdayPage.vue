@@ -11,28 +11,40 @@
       <div class="uk-width-1-2@m">
         <div class="row">
           <div class="uk-inline uk-width-1-1 uk-text-center">
-            <div class="uk-margin">
+            <!-- <div class="uk-margin"> -->
               <label for="birth_month">Month</label>
               <select v-model="month" class="uk-select" name="birth_month" id="">
               <option v-for="_month in months" v-bind:key="_month" v-bind:value="_month"> {{ _month }} </option>
             </select>
-            </div>
+            <!-- </div> -->
           </div>
         </div>
         <!-- list display -->
         <div class="row">
-          <bio-list v-bind:members="members" v-on:member="member = $event"></bio-list>
+          <bio-list v-bind:members="view" v-on:member="setMemberAdjsutScreen($event)"></bio-list>
         </div>
       </div>
       <!-- biodata section -->
       <!--  v-if="member" -->
       <div v-if="member" class="uk-width-expand@m">
-        <bio-data class="space-15" v-bind:member="member"></bio-data>
+        <bio-data id="memberBody" class="row space-15" v-bind:member="member"></bio-data>
       </div>
     </div>
     <div>
-
+      <paginate
+        :page-count="pageCount - 1"
+        :page-range="3"
+        :margin-pages="2"
+        :click-handler="paginatePage"
+        :prev-text="'Prev'"
+        :next-text="'Next'"
+        :container-class="'uk-pagination uk-flex-center'"
+        :page-class="'uk-active'">
+      </paginate>
     </div>
+  </div>
+  <div class="row">
+
   </div>
 </div>
 </template>
@@ -60,13 +72,23 @@ export default {
     return {
       // the list of members to display
       members: [],
+      view: [],
       // current member selected
       member: undefined,
       month: calender.months[0],
       months: calender.months,
+      pageCount: 1,
     };
   },
   methods: {
+    async paginatePage(pageNum) {
+      if (pageNum > 1) {
+        pageNum *= 10;
+      } else {
+        pageNum = 1;
+      }
+      this.view = this.members.slice(pageNum - 1, pageNum + 9);
+    },
     /** search members with their birthMonths  */
     async searchBirthMonth(birthmonth) {
       try {
@@ -75,9 +97,18 @@ export default {
         utils.throwError(err);
         utils.nullError(members);
         this.members = members;
+        let count = this.members.length;
+        if (Math.floor(count % 10) > 0) {
+          count -= Math.floor(count % 3);
+        }
+        this.pageCount = Math.ceil(count / 10);
+        this.paginatePage(0);
       } catch (e) {
         this.handleErr(e);
       }
+    },
+    setMemberAdjsutScreen(member) {
+      this.member = member;
     },
     // handles the error locally
     handleErr(err) {
@@ -108,4 +139,12 @@ export default {
 .space-down-content {
   padding-bottom: 3%;
 }
+
+.action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
 </style>

@@ -19,7 +19,7 @@
   <div class="row" uk-grid>
     <!-- list -->
     <div class="uk-width-1-2">
-      <bio-list v-on:member="member = $event" v-bind:attendance="true" v-bind:members="members"></bio-list>
+      <bio-list v-bind:indexNo="true" v-on:member="member = $event" v-bind:attendance="true" v-bind:members="members"></bio-list>
     </div>
     <!-- content -->
     <div v-if="member" class="uk-width-1-2">
@@ -31,6 +31,18 @@
       </div>
     </div>
   </div>
+  <!-- <div class="row"> -->
+    <paginate
+    :page-count="pageCount - 1"
+    :page-range="3"
+    :margin-pages="2"
+    :click-handler="paginatePage"
+    :prev-text="'Prev'"
+    :next-text="'Next'"
+    :container-class="'uk-pagination uk-flex-center'"
+    :page-class="'uk-active'">
+  </paginate>
+  <!-- </div> -->
   <!-- modal for member form -->
   <div id="memberForm" class="uk-flex-top" uk-modal>
     <!-- <p style="padding-top: 10%"> New Member Registration </p> -->
@@ -62,6 +74,7 @@ import utils, {
   memberUtils,
   notify,
 } from '../utils';
+// import member from '../database/member';
 
 const {
   throwError,
@@ -79,12 +92,10 @@ const {
   getMember,
 } = DB;
 
-async function newId() {
-  const [err, members] = await to(allMembers({
-    include_docs: true,
-  }));
+async function rowCounts() {
+  const [err, members] = await to(allMembers({}));
   throwError(err);
-  return members.rows.length + 1;
+  return members.total_rows;
 }
 
 export default {
@@ -107,6 +118,7 @@ export default {
       // form operation
       formOp: 'New',
       debug: [],
+      pageCount: 1,
     };
   },
   // props: ['query', 'memberId'],
@@ -118,19 +130,44 @@ export default {
       }
       return this.updateMember(value);
     },
+    /** paginates the page with the page number */
+    async paginatePage(pageNum) {
+      console.log({ pageNum });
+      let err;
+      let members;
+      const options = {
+        // limit: 10,
+      };
+      [err, members] = await to(allMembers(options));
+      throwError(err);
+      if (pageNum > 1) {
+        pageNum *= 10;
+      } else {
+        pageNum = 1;
+      }
+      options.startKey = members.rows[pageNum - 1].id;
+      options.endkey = (members.rows[pageNum + 8]) ? members.rows[pageNum + 8].id : undefined;
+      console.log(options);
+      options.include_docs = true;
+      [err, members] = await to(allMembers(options));
+      throwError(err);
+      console.log(members.rows.length);
+      this.members = members.rows.slice(pageNum - 1, pageNum + 9).map(e => e.doc)
+        .filter(e => (e.firstname && e.lastname));
+      console.log(this.members.length);
+    },
     /** retrieves all the members in the database */
     async getAllMembers() {
+      let err;
+      let count;
       try {
-        const [err, members] = await to(allMembers({
-          include_docs: true,
-        }));
-        // logs.info({
-        //   err,
-        //   members,
-        // });
+        [err, count] = await to(rowCounts());
         throwError(err);
-        this.members = members.rows.map(e => e.doc)
-          .filter(e => (e.firstname && e.lastname));
+        if (Math.floor(count % 10) > 0) {
+          count -= Math.floor(count % 3);
+        }
+        this.pageCount = Math.ceil(count / 10);
+        this.paginatePage(0);
       } catch (e) {
         this.handleErr('error retrieving all members', e);
       }
@@ -144,9 +181,11 @@ export default {
         }));
         throwError(err);
         const filterdMembers = members.rows.filter((member) => {
-          const values = Object.values(member.doc).map(v => regx.test(v));
+          const values = Object.values(member.doc)
+            .filter(e => (e))
+            .map(v => regx.test(v.toString().toLowerCase()));
           return values.includes(true);
-        }).map(e => e.doc);
+        }).map(e => e.doc).slice(0, 30);
         this.members = filterdMembers;
         // members
       } catch (e) {
@@ -181,7 +220,7 @@ export default {
       let value;
       try {
         member = Object.assign({}, {
-          _id: `${await newId()}`,
+          _id: `${await rowCounts() + 1}`,
         }, member); // eslint-disable-line
         console.log({ member });
         [err, value] = await to(createMember(member));
