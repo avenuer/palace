@@ -66,9 +66,9 @@
             </v-list-tile-action>
 
             <v-list-tile-content>
-              <v-list-tile-title>{{ picker }} </v-list-tile-title>
+              <v-list-tile-title>{{ member.day }} {{ member.month }} </v-list-tile-title>
             </v-list-tile-content>
-            <v-icon @click="calender = !calender">calendar_today</v-icon>
+            <v-icon v-if="actions"  @click="calender = !calender">calendar_today</v-icon>
             <!-- calender -->
                 <v-date-picker v-if="calender" :readonly="true" v-model="picker"></v-date-picker>
           </v-list-tile>

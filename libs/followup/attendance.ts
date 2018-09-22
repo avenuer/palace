@@ -58,3 +58,4 @@ export function memberAttendMaps(members: Member[], attendance: Attendance[], da
         }
     });
 }
+

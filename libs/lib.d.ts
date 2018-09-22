@@ -17,3 +17,4 @@ declare module 'vue/types/vue' {
       $notify: (options: NotificationOptions | string) => void;
   }
 }
+

@@ -72,3 +72,9 @@ export type UpdateQueryApi = ModelHeaders<Partial<any>>;
 export interface MemberAttendanceQuery extends Member {
   selectedDate?: number;
 }
+export interface MemberFollowUpGraph {
+  ownerId: string;
+  selectedDate: number;
+  interval?: number | 7;
+  count?: number | 5;
+}
