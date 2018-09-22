@@ -1,40 +1,65 @@
 <!-- src/components/HelloDecorator.vue -->
 <!-- This is an alternative way to define the Hello component using decorators -->
 <template>
-    <div>
-        <div class="greeting">Hello {{name}}{{exclamationMarks}}</div>
-        <button @click="decrement">-</button>
-        <button @click="increment">+</button>
-    </div>
+
+<v-app>
+  <!-- <v-navigation-drawer app></v-navigation-drawer> -->
+<elizer-nav-bar></elizer-nav-bar>
+  <v-content>
+    <notifications position="bottom right"/>
+      <router-view></router-view>
+  </v-content>
+  <v-footer app></v-footer>
+</v-app>
+
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
+import ElizerNavBar from "../shared/navbar.vue";
 
-@Component
+@Component({
+  components: {
+    ElizerNavBar
+  }
+})
 export default class HelloDecorator extends Vue {
-    @Prop() name!: string;
-    @Prop() initialEnthusiasm!: number;
+  @Prop() public name!: string;
+  @Prop() public initialEnthusiasm!: number;
 
-    enthusiasm = this.initialEnthusiasm;
+  public enthusiasm = this.initialEnthusiasm;
 
-    increment() {
-        this.enthusiasm++;
-    }
-    decrement() {
-        if (this.enthusiasm > 1) {
-            this.enthusiasm--;
-        }
-    }
+  public increment() {
+    this.enthusiasm++;
+  }
 
-    get exclamationMarks(): string {
-        return Array(this.enthusiasm + 1).join('!');
+  public decrement() {
+    if (this.enthusiasm > 1) {
+      this.enthusiasm--;
     }
+  }
+
+  public log($event: Event) {
+    const files = ($event.srcElement as HTMLInputElement).files;
+    if (!files) {
+      return;
+    }
+    const file = files.item(0);
+    // tslint:disable-next-line:no-console
+    console.log($event);
+  }
+
+  get exclamationMarks(): string {
+    return Array(this.enthusiasm + 1).join("!");
+  }
 }
 </script>
 
-<style>
+<style lang="scss">
+@import "~vuetify/dist/vuetify.min.css";
+@import "~material-design-icons-iconfont/dist/material-design-icons.css";
+
 .greeting {
-    font-size: 20px;
+  font-size: 20px;
 }
 </style>
