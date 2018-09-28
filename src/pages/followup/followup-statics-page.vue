@@ -8,7 +8,7 @@
     <v-layout row wrap>
       <v-flex xs6>
         <v-layout column>
-          <v-flex d-flex>
+          <v-flex v-if="chartData" d-flex>
              <dynam-chart :type="chartType"  :data="chartData" :options="chartOptions"></dynam-chart>
           </v-flex>
           <v-flex d-flex>
@@ -31,32 +31,19 @@
       <!-- biodata -->
       <v-flex xs6>
         <v-layout column>
-          <div v-if="member">
-            <elizer-member-biodata :image="image.link" :member="member" ></elizer-member-biodata>
-          </div>
+          <member-profile-page></member-profile-page>
         </v-layout>
       </v-flex>
+      {{ image }}
     </v-layout>
   </v-container>
-
-
-    <!-- <v-container fluid> -->
-
-
-<!-- {{ member }}
-
-{{ graphAttendance }}
-
-{{ attendanceList }} -->
-
-    <!-- </v-container> -->
 
 </div>
 
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import {
   Member,
   EntityModelNames,
@@ -73,14 +60,14 @@ import {
 import { TableHeader, TablePagination } from "@elizer/members";
 
 import { format } from "date-fns";
-import ElizerMemberBiodata from "../../shared/member/member-profile.vue";
 import DynamChart from "../../shared/charts/dynam-chart.vue";
 import { ChartData, ChartOptions } from "chart.js";
 import { uniqBy } from 'lodash';
+import MemberProfilePage from '../admin/member-profile-page.vue';
 
 @Component({
   components: {
-    ElizerMemberBiodata,
+    MemberProfilePage,
     DynamChart
   }
 })
@@ -88,12 +75,12 @@ export default class FollowUpStaticsPage extends Vue {
   /** user biodata details */
   private member: Member | null = null;
   /** user image */
-  private image: Image | object = {};
+  private image: string | null = null;
 
   /** chart type */
-  private chartType = 'line';
+  private chartType = 'bar';
   /** chart data */
-  private chartData: ChartData = {};
+  private chartData: ChartData | null = null;
 
   /** selectedDate to start graph intervals */
   private selectedDate = Number(format(Date.now(), "x"));
@@ -133,27 +120,6 @@ export default class FollowUpStaticsPage extends Vue {
     }
   };
 
-  // get user biodata details
-  async loadBiodata(id: string) {
-    const { error, data } = await getApiFactory<Member>(
-      EntityModelNames.Member,
-      id
-    );
-    if (data) {
-      this.member = data;
-      this.$notify({
-        title: "Reterived Member Biodata",
-        type: "success",
-        text: `successfully load member details`
-      });
-      return;
-    }
-    this.$notify({
-      title: `Error loading Biodata`,
-      type: "error",
-      text: `error while attempting to load ${id} biodata`
-    });
-  }
 
   // get graph details
   async loadGraphDetails(id: string) {
@@ -180,28 +146,6 @@ export default class FollowUpStaticsPage extends Vue {
   }
 
   /** retrieves the image of the owner from the Database */
-  async loadImage(owner: string) {
-    const { data, error } = await findApiFactory<Image, Partial<Image>>(
-      EntityModelNames.Image,
-      { owner }
-    );
-    if (data) {
-      this.image = data[0] || {};
-      this.$notify({
-        title: "Retrived Member Image",
-        type: "success",
-        text: `successfully retrived member Image`
-      });
-      return;
-    }
-    if (error) {
-      this.$notify({
-        title: `Error Retrieving Member Image`,
-        type: "error",
-        text: `error while getting member image or Image doesn't exist`
-      });
-    }
-  }
 
   async attendanceHistory(id: string, skip: number = 0) {
     try {
@@ -256,29 +200,28 @@ export default class FollowUpStaticsPage extends Vue {
     );
   }
 
+  /** cleans the attendance graph map to a valid chart data */
   chartDataPreset(attendances: Attendance[]): ChartData {
     const labels: string[] = [];
-    const data = uniqBy(this.attendances, 'date').map(a => {
+    const data = uniqBy(attendances, 'date').map(a => {
       labels.push(format(a.date, DateFormat));
-      return ((a.attendance as any)  === AttendanceStatus.Present) ? 100 : 0;
+      return (a.attendance === AttendanceStatus.Present) ? 1 : 0;
     });
-    console.log(data);
     return {
         labels,
         datasets: [{
-            data: [0, ...data],
-            label: '# of Votes'
+            data,
+            label: 'Attendance graph'
         }]
     };
   }
 
   mounted() {
     const id = this.$route.params.id;
-    this.loadBiodata(id);
     this.loadGraphDetails(id);
-    // this.attendanceHistory(id);
-    this.loadImage(id);
+    this.attendanceHistory(id);
   }
+
 }
 </script>
 

@@ -70,7 +70,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { format, getMonth } from "date-fns";
-import { findApiFactory } from "libs/render";
+import { findApiFactory, AdminRoutesNames } from "libs/render";
 import {
   EntityModelNames,
   Member,
@@ -135,6 +135,15 @@ export default class BirthDayPage extends Vue {
     }
     // handle error
     this.status = res.status;
+  }
+
+  /** loads the member biodata profile page */
+  memberProfile(member: Member) {
+    console.log(member.id);
+    this.$router.push({
+      name: AdminRoutesNames.MemberProfile,
+      params: { id: member.id as string }
+    });
   }
 
   get picker() {

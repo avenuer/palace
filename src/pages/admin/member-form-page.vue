@@ -117,11 +117,7 @@ export default class MemberFormPage extends Vue {
   }
 
 /** retrieve the member for edit operation */
-  async retriveMember() {
-    const id = this.$route.params.id;
-    if (!id) {
-      return;
-    }
+  async retriveMember(id: string) {
     const res = await getApiFactory<Member>(EntityModelNames.Member, id);
     if (res.data) {
       this.member = res.data;
@@ -149,7 +145,10 @@ export default class MemberFormPage extends Vue {
   }
 
   mounted() {
-    this.retriveMember();
+    // if its the edit page requested with route params
+    if (this.$route.name === AdminRoutesNames.MemberEdit) {
+      this.retriveMember(this.$route.params.id);
+    }
     this.setTotal();
   }
 }

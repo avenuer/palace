@@ -29,7 +29,7 @@ export interface Member extends Partial<BaseModel> {
 export interface Attendance extends Partial<BaseModel> {
     owner: string;
     date: number;
-    attendance: typeof AttendanceStatus;
+    attendance: AttendanceStatus;
 }
 
 export interface Image extends Partial<BaseModel> {

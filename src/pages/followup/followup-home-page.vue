@@ -71,7 +71,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { format, getMonth, getMilliseconds } from "date-fns";
-import { findMembersAttendance } from "libs/render";
+import { findMembersAttendance, FollowUpRoutesNames } from "libs/render";
 import {
   EntityModelNames,
   Member,
@@ -87,7 +87,6 @@ import { TableHeader, TablePagination } from "@elizer/members";
   components: {}
 })
 export default class FollowUpHomePage extends Vue {
-
   /** query for search */
   private query: Partial<Member> = {};
 
@@ -125,9 +124,12 @@ export default class FollowUpHomePage extends Vue {
   /** the currently selected date */
   private currentDate = Date.now();
 
-  async membersAttendance(query: Partial<MemberAttendanceQuery>, skip: number = 0) {
+  async membersAttendance(
+    query: Partial<MemberAttendanceQuery>,
+    skip: number = 0
+  ) {
     try {
-      query.selectedDate = Number(format(this.selectedDate, 'x'));
+      query.selectedDate = Number(format(this.selectedDate, "x"));
       const resp = await findMembersAttendance(query, { skip });
       if (resp.data) {
         this.members = resp.data;
@@ -150,6 +152,14 @@ export default class FollowUpHomePage extends Vue {
         text: (error as Error).message
       });
     }
+  }
+
+  /** changes the route to the member individual statics */
+  memberProfile(member: MembersAttendance) {
+    this.$router.push({
+      name: FollowUpRoutesNames.Profile,
+      params: { id: member.id as string }
+    });
   }
 
   /** return selected date for the calender */
@@ -187,7 +197,7 @@ export default class FollowUpHomePage extends Vue {
   }
 
   get picker() {
-    return format(this.currentDate, 'YYYY-MM-DD');
+    return format(this.currentDate, "YYYY-MM-DD");
   }
 
   set picker(date: string) {
@@ -198,5 +208,4 @@ export default class FollowUpHomePage extends Vue {
 </script>
 
 <style lang="scss">
-
 </style>
