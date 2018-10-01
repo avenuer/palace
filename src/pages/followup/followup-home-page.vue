@@ -63,11 +63,11 @@
               <td class="text-xs-right">{{ props.item.totalAttendance }}</td>
               <td class="justify-center layout px-0">
                   <v-icon
-                    small
+                    large
                     class="mr-2"
                     @click="memberProfile(props.item)"
                   >
-                    edit
+                    more_vert
                   </v-icon>
                 </td>
             </template>
@@ -127,7 +127,8 @@ export default class FollowUpHomePage extends Vue {
     { text: "Church No", value: "churchNo", align: "center" },
     { text: "Date Attendance", value: "selectedDate", align: "center" },
     { text: "last Attendance", value: "lastAttendance", align: "center" },
-    { text: "Total Attendance", value: "totalAttendance", align: "center" }
+    { text: "Total Attendance", value: "totalAttendance", align: "center" },
+    { text: "Statics", value: "totalAttendance", align: "left" }
   ];
 
   /** member details array */

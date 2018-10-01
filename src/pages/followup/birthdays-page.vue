@@ -49,11 +49,11 @@
               <td class="text-xs-right">{{ props.item.department }}</td>
               <td class="justify-center layout px-0">
                   <v-icon
-                    small
+                    large
                     class="mr-2"
                     @click="memberProfile(props.item)"
                   >
-                    edit
+                    more_vert
                   </v-icon>
                 </td>
             </template>
@@ -98,7 +98,8 @@ export default class BirthDayPage extends Vue {
   { text: "Gender", value: "gender", align: "center" },
   { text: "Phone No", value: "phoneNo", align: "center" },
   { text: "Day", value: "day", align: "center" },
-  { text: "Department", value: "department", align: "center" }
+  { text: "Department", value: "department", align: "center" },
+  { text: "Profile", value: "department", align: "left" }
 ];
 
   // members to be displayed

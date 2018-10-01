@@ -6,7 +6,7 @@
 
   <v-container fluid>
       <image-upload @submit="setImg($event)"></image-upload>
-      <elizer-member-form @submit="saveUser($event)" v-bind:input="member" ></elizer-member-form>
+      <elizer-member-form v-if="member"  @submit="saveUser($event)" v-bind:input="member" ></elizer-member-form>
   </v-container>
 
 </div>
@@ -35,7 +35,7 @@ import { error } from "util";
   }
 })
 export default class MemberFormPage extends Vue {
-  public member: Member = {} as any;
+  public member: Member | null = null ;
 
   private image: string | undefined;
 
@@ -148,6 +148,8 @@ export default class MemberFormPage extends Vue {
     // if its the edit page requested with route params
     if (this.$route.name === AdminRoutesNames.MemberEdit) {
       this.retriveMember(this.$route.params.id);
+    } else {
+      this.member = {} as any;
     }
     this.setTotal();
   }

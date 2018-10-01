@@ -89,8 +89,8 @@ export default class ElizerNavBar extends Vue {
           action: FollowUpRoutesNames.Birthdays,
           icon: "event"
         },
-        { title: "Histroy", action: FollowUpRoutesNames.Home, icon: 'history' },
-        { title: "Register", action: FollowUpRoutesNames.Register, icon: 'check_box' }
+        { title: "History", action: FollowUpRoutesNames.Home, icon: 'history' },
+        { title: "Register", action: FollowUpRoutesNames.Register, icon: 'check' }
       ]
     }
   };

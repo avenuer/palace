@@ -3,9 +3,10 @@ import Vuetify from "vuetify";
 import HelloDecoratorComponent from "./components/HelloDecorator.vue";
 import VueRouter from "vue-router";
 import Notifications from 'vue-notification'
-
-
 import appRoutes from "./routes";
+
+Vue.prototype.$menu = true;
+
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 Vue.use(Notifications);

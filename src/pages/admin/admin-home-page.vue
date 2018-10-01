@@ -36,11 +36,11 @@
       <td class="text-xs-right">{{ props.item.churchNo }}</td>
       <td class="justify-center layout px-0">
           <v-icon
-            small
+          large
             class="mr-2"
             @click="memberProfile(props.item)"
           >
-            edit
+            more_vert
           </v-icon>
         </td>
     </template>
@@ -76,7 +76,8 @@ export default class AdminHomePage extends Vue {
     },
     { text: "Gender", value: "gender", align: "center" },
     { text: "Phone No", value: "phoneNo", align: "center" },
-    { text: "Church No", value: "churchNo", align: "center" }
+    { text: "Church No", value: "churchNo", align: "center" },
+    { text: "More Details", value: "churchNo", align: "left" }
   ];
 
   /** total numbers of memebers */

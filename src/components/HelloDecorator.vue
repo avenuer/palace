@@ -4,10 +4,15 @@
 
 <v-app>
   <v-navigation-drawer  stateless  width="250"
-    value="true" app>
+    :value="menu" app>
     <elizer-side-bar> </elizer-side-bar>
   </v-navigation-drawer>
-<elizer-nav-bar></elizer-nav-bar>
+  <v-toolbar dark color="primary" app>
+      <v-toolbar-side-icon @click="menu = !menu" ></v-toolbar-side-icon>
+    <v-toolbar-title>Elizer </v-toolbar-title>
+    <v-spacer></v-spacer>
+    <v-btn @click="$router.go(-1)" flat> Go Back </v-btn>
+  </v-toolbar>
   <v-content>
     <notifications position="bottom right"/>
       <router-view></router-view>
@@ -19,16 +24,16 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import ElizerNavBar from "./root/navbar.vue";
 import ElizerSideBar from "./root/sidebar.vue";
 
 @Component({
   components: {
-    ElizerNavBar,
     ElizerSideBar
   }
 })
 export default class HelloDecorator extends Vue {
+
+  private menu = false;
 
 }
 </script>
