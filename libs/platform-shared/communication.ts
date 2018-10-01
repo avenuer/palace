@@ -78,3 +78,9 @@ export interface MemberFollowUpGraph {
   interval?: number | 7;
   count?: number | 5;
 }
+
+export interface Search {
+    $search: string;
+}
+
+export type SearchQuery<T> = Search & Partial<T>

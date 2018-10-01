@@ -6,10 +6,7 @@
       <v-toolbar-side-icon></v-toolbar-side-icon>
     <v-toolbar-title>Elizer </v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-toolbar-items class="hidden-sm-and-down">
-      <v-btn flat>Follow Up</v-btn>
-      <v-btn flat>Admin</v-btn>
-    </v-toolbar-items>
+    <v-btn flat> Go Back </v-btn>
   </v-toolbar>
 
 </template>

@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuetify from "vuetify";
 import HelloDecoratorComponent from "./components/HelloDecorator.vue";
-import VueRouter, { RouteConfig } from "vue-router";
+import VueRouter from "vue-router";
 import Notifications from 'vue-notification'
 
 

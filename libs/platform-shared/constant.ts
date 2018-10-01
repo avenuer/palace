@@ -38,3 +38,5 @@ export enum FollowUpStatic {
 
 // tslint:disable-next-line:variable-name
 export const DateFormat = "D-MMMM-YYYY";
+
+export const memberSearchFields = ['name', 'address', 'gender', 'department', 'level', 'school', 'job', 'workAddress'  ];

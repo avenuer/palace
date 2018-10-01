@@ -12,12 +12,13 @@ import {
   Attendance,
   MemberFollowUpGraph
 } from "@elizer/shared";
-import { find, fQD } from "./models/orm";
+import { find } from "./models/orm";
 import { DBKollections } from "../rxdb/interface";
 import { memberAttendMaps, MembersAttendance } from "libs/followup/attendance";
 import { attendanceStatusDaysIntervals } from "../followup";
 import { count } from "rxjs/operators";
 import { RxDocument } from "rxdb";
+import { fQD } from "./models/find-search";
 
 const { Find, Retrieve, MemberGraph } = FollowUpStatic;
 
@@ -71,7 +72,7 @@ async function membersStatic(
       const followStats = await memberAttendMaps(data, attends, selectedDate);
       return {
         data: followStats,
-        ...others
+        ...others as any
       };
     }
     throw new Error(error);

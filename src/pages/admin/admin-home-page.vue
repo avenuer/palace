@@ -3,9 +3,25 @@
 <template>
 
 <div>
-<router-view></router-view>
-    <v-container fluid>
-      <v-data-table
+
+      <v-container fluid>
+
+
+
+<v-card>
+    <v-card-title>
+      Members
+      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        append-icon="search"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-title>
+
+<v-data-table
     :headers="headers"
     :items="members"
     :total-items="total"
@@ -30,7 +46,9 @@
     </template>
   </v-data-table>
 
-    </v-container>
+  </v-card>
+      </v-container>
+
 
 </div>
 
@@ -40,7 +58,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import ElizerMemberBiodata from "../../shared/member/member-profile.vue";
 import { findApiFactory, AdminRoutesNames } from "libs/render";
-import { EntityModelNames, Member, FindQueryParams } from "@elizer/shared";
+import { EntityModelNames, Member, FindQueryParams, SearchQuery } from "@elizer/shared";
 import { TableHeader, TablePagination } from "@elizer/members";
 
 @Component({
@@ -70,7 +88,10 @@ export default class AdminHomePage extends Vue {
   members: Member[] = [];
 
   /** current query state */
-  query: Partial<Member> = {};
+  query: Partial<SearchQuery<Member>> = {};
+
+  /** the private search text */
+  searchText: string | undefined | null = null;
 
   /** gets the members stored in the database */
   async getMembers(
@@ -120,6 +141,20 @@ export default class AdminHomePage extends Vue {
   set pagination(v: TablePagination<Member>) {
     const miply = v.page < 2 ? 0 : 1;
     this.getMembers(this.query, { skip: this.limit * miply });
+  }
+
+  get search() {
+    return this.searchText || '';
+  }
+
+  set search(newValue: string) {
+    this.searchText = newValue;
+    if (newValue === '') {
+      delete this.query.$search;
+    } else {
+      this.query.$search = newValue;
+    }
+    this.getMembers(this.query, {});
   }
 }
 </script>

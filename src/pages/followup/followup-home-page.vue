@@ -32,6 +32,19 @@
           </v-dialog>
         </v-flex>
         <v-flex xs12>
+          <v-card>
+    <v-card-title>
+      Members
+      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        append-icon="search"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-title> 
+    
           <v-data-table
             :headers="headers"
             :items="membersMaped"
@@ -59,6 +72,8 @@
                 </td>
             </template>
           </v-data-table>
+    
+    </v-card>
         </v-flex>
       </v-layout>
 
@@ -78,7 +93,7 @@ import {
   ApiStatus,
   DateFormat,
   FindQueryParams,
-  MemberAttendanceQuery
+  MemberAttendanceQuery, SearchQuery
 } from "@elizer/shared";
 import { MembersAttendance } from "libs/followup/attendance";
 import { TableHeader, TablePagination } from "@elizer/members";
@@ -88,7 +103,7 @@ import { TableHeader, TablePagination } from "@elizer/members";
 })
 export default class FollowUpHomePage extends Vue {
   /** query for search */
-  private query: Partial<Member> = {};
+  private query: Partial<SearchQuery<Member>> = {};
 
   /** the total amount of result */
   private total = 0;
@@ -123,6 +138,9 @@ export default class FollowUpHomePage extends Vue {
 
   /** the currently selected date */
   private currentDate = Date.now();
+
+    /** the private search text */
+  searchText: string | undefined | null = null;
 
   async membersAttendance(
     query: Partial<MemberAttendanceQuery>,
@@ -204,6 +222,21 @@ export default class FollowUpHomePage extends Vue {
     this.currentDate = Number(format(date, "x"));
     this.membersAttendance(this.query);
   }
+
+  get search() {
+    return this.searchText || '';
+  }
+
+  set search(newValue: string) {
+    this.searchText = newValue;
+    if (newValue === '') {
+      delete this.query.$search;
+    } else {
+      this.query.$search = newValue;
+    }
+    this.membersAttendance(this.query, 0);
+  }
+
 }
 </script>
 

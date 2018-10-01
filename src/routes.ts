@@ -16,9 +16,8 @@ const appRoutes: RouteConfig[] = [
   {
     path: '/admin',
     component: AdminBasePage,
-    name: AdminRoutesNames.Home,
     children: [
-      { path: '', component: AdminHomePage },
+      { path: '', component: AdminHomePage, name: AdminRoutesNames.Home },
       { path: 'form', component: MemberFormPage, name: AdminRoutesNames.MemberCreate },
       { path: 'profile/:id', component: MemberProfilePage, name: AdminRoutesNames.MemberProfile },
       { path: 'edit/:id', component: MemberFormPage, name: AdminRoutesNames.MemberEdit },
@@ -27,9 +26,8 @@ const appRoutes: RouteConfig[] = [
   {
     path: '/followup',
     component: AdminBasePage,
-    name: FollowUpRoutesNames.Home,
     children: [
-      { path: '', component: FollowUpHomePage },
+      { path: '', component: FollowUpHomePage, name: FollowUpRoutesNames.Home, },
       { path: 'register', component: AttendanceRegisterPage, name: FollowUpRoutesNames.Register },
       { path: 'birthdays', component: BirthDaysPage, name: FollowUpRoutesNames.Birthdays },
       { path: 'profile/:id', component: FollowUpStaticsPage, name: FollowUpRoutesNames.Profile },

@@ -3,7 +3,10 @@
 <template>
 
 <v-app>
-  <!-- <v-navigation-drawer app></v-navigation-drawer> -->
+  <v-navigation-drawer  stateless  width="250"
+    value="true" app>
+    <elizer-side-bar> </elizer-side-bar>
+  </v-navigation-drawer>
 <elizer-nav-bar></elizer-nav-bar>
   <v-content>
     <notifications position="bottom right"/>
@@ -16,42 +19,17 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import ElizerNavBar from "../shared/navbar.vue";
+import ElizerNavBar from "./root/navbar.vue";
+import ElizerSideBar from "./root/sidebar.vue";
 
 @Component({
   components: {
-    ElizerNavBar
+    ElizerNavBar,
+    ElizerSideBar
   }
 })
 export default class HelloDecorator extends Vue {
-  @Prop() public name!: string;
-  @Prop() public initialEnthusiasm!: number;
 
-  public enthusiasm = this.initialEnthusiasm;
-
-  public increment() {
-    this.enthusiasm++;
-  }
-
-  public decrement() {
-    if (this.enthusiasm > 1) {
-      this.enthusiasm--;
-    }
-  }
-
-  public log($event: Event) {
-    const files = ($event.srcElement as HTMLInputElement).files;
-    if (!files) {
-      return;
-    }
-    const file = files.item(0);
-    // tslint:disable-next-line:no-console
-    console.log($event);
-  }
-
-  get exclamationMarks(): string {
-    return Array(this.enthusiasm + 1).join("!");
-  }
 }
 </script>
 
