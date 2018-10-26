@@ -1,6 +1,7 @@
 import { app, BrowserWindow, dialog } from 'electron' // eslint-disable-line
 import PouchDB from 'pouchdb';
 import * as path from 'path';
+import { writeFile } from 'fs';
 
 process.env.PALACE_PROJECT = path.join(process.env.LOCALAPPDATA, 'palace');
 
@@ -24,6 +25,22 @@ let mainWindow;
 const winURL = process.env.NODE_ENV === 'development'
   ? 'http://localhost:9080'
   : `file://${__dirname}/index.html`;
+
+async function dumpDB() {
+  const string = JSON.stringify(await global.memberDB.allDocs({ include_docs: true }));
+  dialog.showSaveDialog(
+    mainWindow,
+    { title: 'save database dump' },
+    (filename) => {
+      writeFile(filename, string, (err) => {
+        if (err) {
+          global.logger.error(err);
+        }
+      });
+    });
+}
+
+global.dumpDB = dumpDB;
 
 function createWindow() {
   /**
