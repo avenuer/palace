@@ -1,5 +1,7 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import { eventBus } from "libs/electron/ipc";
+import { shortcuts } from "libs/electron/dev";
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: BrowserWindow | null;
@@ -16,6 +18,8 @@ function createWindow() {
 
   // Open the DevTools.
   win.webContents.openDevTools();
+  // register devtools and shortcuts
+  shortcuts(win);
 
   /** show but hide if page not rendered */
   win.on('ready-to-show', () => {

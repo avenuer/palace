@@ -1,5 +1,5 @@
 {
-  "name": "typescript-vue-starter",
+  "name": "Palace",
   "version": "1.0.0",
   "private": true,
   "main": "./dist/electron-main.js",

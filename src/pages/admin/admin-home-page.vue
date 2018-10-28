@@ -140,8 +140,7 @@ export default class AdminHomePage extends Vue {
   }
 
   set pagination(v: TablePagination<Member>) {
-    const miply = v.page < 2 ? 0 : 1;
-    this.getMembers(this.query, { skip: this.limit * miply });
+    this.getMembers(this.query, { skip: this.limit * (v.page - 1) });
   }
 
   get search() {

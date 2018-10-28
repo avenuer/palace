@@ -11,7 +11,11 @@ import {
   Member,
   MemberAttendanceQuery,
   MemberFollowUpGraph,
-  Attendance
+  Attendance,
+  RegisterQuery,
+  RegisterAttendance,
+  TotalAttendanceStatics,
+  Migration
 } from "@elizer/shared";
 import { renderEventBus } from "./ipc.render";
 import { MembersAttendance } from "libs/followup/attendance";
@@ -66,5 +70,29 @@ export function findMembersAttendance(
 export function loadMemberGraphData(query: MemberFollowUpGraph) {
   return renderEventBus<OtherQueryResponse<Attendance[]>>(
     apiFactory(FollowUpStatic.MemberGraph, query, {})
+  );
+}
+
+export function registerHistory(
+  query: RegisterQuery,
+  custom: Partial<FindQueryParams> = {}
+) {
+  return renderEventBus<OtherQueryResponse<RegisterAttendance[]>>(
+    apiFactory(FollowUpStatic.RegisterHistory, query, custom)
+  );
+}
+
+export function attendanceSumationStatics(
+  query: Partial<Member>,
+  custom: Partial<FindQueryParams> = {}
+) {
+  return renderEventBus<FindQueryResponse<TotalAttendanceStatics>>(
+    apiFactory(FollowUpStatic.TotalAttendanceHistory, query, custom)
+  );
+}
+
+export function migratePrototype() {
+  return renderEventBus<OtherQueryResponse<string>>(
+    apiFactory(Migration.Prototype, {}, {})
   );
 }

@@ -1,4 +1,4 @@
-import { IpcRenderer, BrowserWindow } from 'electron';
+import { IpcRenderer } from 'electron';
 import { ApiFormat, EventBus, BaseResponse, ApiStatus } from '@elizer/shared';
 
 // const REQUEST_TIME_OUT = 2000;

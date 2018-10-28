@@ -111,9 +111,6 @@ export default class FollowUpStaticsPage extends Vue {
   /** member details array */
   private attendances: Attendance[] = [];
 
-  /** previous pagination */
-  private prevPagination: TablePagination<Attendance> = {} as any;
-
   private chartOptions: ChartOptions = {
     scales: {
       yAxes: [{ ticks: { beginAtZero: true } }]
@@ -184,11 +181,7 @@ export default class FollowUpStaticsPage extends Vue {
 
   /** updates pagination condition */
   set pagination(v: TablePagination<Attendance>) {
-    if (this.prevPagination.page !== v.page) {
-      const miply = v.page < 2 ? 0 : 1;
-      this.attendanceHistory(this.$route.params.id, this.limit * miply);
-    }
-    this.prevPagination = v;
+    this.attendanceHistory(this.$route.params.id, this.limit * (v.page - 1));
   }
 
   get attendanceList() {

@@ -134,9 +134,6 @@ export default class FollowUpHomePage extends Vue {
   /** member details array */
   private members: MembersAttendance[] = [];
 
-  /** previous pagination */
-  private prevPagination: TablePagination<MembersAttendance> = {} as any;
-
   /** the currently selected date */
   private currentDate = Date.now();
 
@@ -195,7 +192,7 @@ export default class FollowUpHomePage extends Vue {
   get membersMaped() {
     return this.members.map(e => {
       const { lastAttendance, ...others } = e;
-      return { ...others, lastAttendance: format(lastAttendance, DateFormat) };
+      return { ...others, lastAttendance:  !!Number(lastAttendance) ? format(lastAttendance, DateFormat) : '' };
     });
   }
 
@@ -208,11 +205,7 @@ export default class FollowUpHomePage extends Vue {
 
   /** updates pagination condition */
   set pagination(v: TablePagination<MembersAttendance>) {
-    if (this.prevPagination.page !== v.page) {
-      const miply = v.page < 2 ? 0 : 1;
-      this.membersAttendance(this.query, this.limit * miply);
-    }
-    this.prevPagination = v;
+      this.membersAttendance(this.query, this.limit * (v.page - 1) );
   }
 
   get picker() {

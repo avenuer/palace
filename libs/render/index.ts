@@ -3,6 +3,7 @@ export * from './ipc.render';
 
 export enum RouterNames {
     HomePage = 'Homepage',
+    TechnicalPage = 'TechnicalPage',
 }
 
 export enum AdminRoutesNames {
@@ -16,5 +17,6 @@ export enum FollowUpRoutesNames {
     Home = 'FollowUp',
     Register = 'FollowUp::Register',
     Birthdays = 'FollowUp::Birthdays',
-    Profile = 'FollowUp::Profile'
+    Profile = 'FollowUp::Profile',
+    SummationStats = 'FollowUp::SummationStats',
 }

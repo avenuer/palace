@@ -78,20 +78,45 @@ export default class ElizerNavBar extends Vue {
           action: AdminRoutesNames.Home,
           icon: "collections_bookmark"
         },
-        { title: "Create", action: AdminRoutesNames.MemberCreate, icon: 'person_add' }
+        {
+          title: "Create",
+          action: AdminRoutesNames.MemberCreate,
+          icon: "person_add"
+        }
       ]
     },
     followUp: {
       icon: "assessment",
       subMenu: [
         {
+          title: "FollowUp",
+          action: FollowUpRoutesNames.Home,
+          icon: "history"
+        },
+        {
+          title: "Register",
+          action: FollowUpRoutesNames.Register,
+          icon: "check"
+        },
+        {
           title: "BirthDays",
           action: FollowUpRoutesNames.Birthdays,
           icon: "event"
         },
-        { title: "History", action: FollowUpRoutesNames.Home, icon: 'history' },
-        { title: "Register", action: FollowUpRoutesNames.Register, icon: 'check' }
+        {
+          title: "Attendance Statics",
+          action: FollowUpRoutesNames.SummationStats,
+          icon: "dashboard"
+        }
       ]
+    },
+    utility: {
+      icon: 'settings_input_component',
+      subMenu: [{
+        title: 'Techincal',
+        action: RouterNames.TechnicalPage,
+        icon: 'build'
+      }]
     }
   };
 

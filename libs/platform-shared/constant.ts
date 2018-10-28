@@ -34,6 +34,12 @@ export enum FollowUpStatic {
   Find = 'Followup-find',
   Retrieve = 'Followup-retrieve',
   MemberGraph = 'Followup-member-graph',
+  RegisterHistory = 'Followup-register-history',
+  TotalAttendanceHistory = 'Followup-attendance-history',
+}
+
+export enum Migration {
+  Prototype = 'Migration-prototype'
 }
 
 // tslint:disable-next-line:variable-name

@@ -85,7 +85,8 @@ export default class MemberProfilePage extends Vue {
     const { data, error } = await deleteApiFactory(EntityModelNames.Image, id);
     if (data) {
       this.$notify({ title: 'Deleted Image Upload', type: 'success', text: `successfully Deleted member image upload` });
-      return this.navigateHome();
+      this.navigateHome();
+      return;
     }
     this.$notify({
       title: `Error Deleting Image Upload`,
@@ -101,13 +102,11 @@ export default class MemberProfilePage extends Vue {
 
 /** navigates the router to the form page for edit or update */
   editMember({ id }: Member) {
-    console.log(id);
     this.$router.push({ name: AdminRoutesNames.MemberEdit, params: { id: id as string } });
   }
 
   /** check if edit actions should be allowed on the component route */
   mounted() {
-    console.log({ match: this.$route.path.indexOf('admin') > 0});
     if (this.$route.path.match('regx')) {
       this.actions = true;
     }

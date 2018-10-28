@@ -59,7 +59,7 @@ export async function searchDocs<T>(
 }
 
 /** search and count query that matches the query by doing a deep search */
-function searchAndCountQuery<T>(
+export function searchAndCountQuery<T>(
   query: string,
   docs: T[],
   ctm: Partial<FindQueryParams> = {}

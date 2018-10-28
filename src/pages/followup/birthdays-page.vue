@@ -117,8 +117,6 @@ export default class BirthDayPage extends Vue {
   // amount of members found
   private total = 0;
 
-  private prevPagination: TablePagination<Member> = {} as any;
-
   async monthBirthDays(month: string, skip: number = 0) {
     this.skip = skip;
     const res = await findApiFactory<Member, Partial<Member>>(
@@ -167,11 +165,7 @@ export default class BirthDayPage extends Vue {
   }
 
   set pagination(v: TablePagination<Member>) {
-    if (this.prevPagination.page !== v.page) {
-      const miply = (v.page < 2) ? 0 : 1;
-      this.monthBirthDays(this.currentMonth, this.limit * miply);
-    }
-    this.prevPagination = v;
+    this.monthBirthDays(this.currentMonth, this.limit * (v.page - 1) );
   }
 }
 </script>

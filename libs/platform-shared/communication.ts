@@ -1,4 +1,4 @@
-import { ApiMethod, EntityModelNames, CrudMethod, ApiStatus, FollowUpStatic } from "./constant";
+import { ApiMethod, EntityModelNames, CrudMethod, ApiStatus, FollowUpStatic, AttendanceStatus, Migration } from "./constant";
 import * as uuid from "uuid/v1";
 import { Member } from "./models";
 
@@ -10,14 +10,14 @@ export interface BaseResponse {
 
 export interface ApiFormat<T, K> {
   id: string;
-  method: ApiMethod | CrudMethod | FollowUpStatic;
+  method: ApiMethod | CrudMethod | FollowUpStatic | Migration;
   data: T;
   event: EventBus;
   headers: K;
 }
 
 export function apiFactory<T, K>(
-  method: ApiMethod | CrudMethod | FollowUpStatic,
+  method: ApiMethod | CrudMethod | FollowUpStatic | Migration,
   data: T,
   headers: K
 ): ApiFormat<T, K> {
@@ -84,3 +84,29 @@ export interface Search {
 }
 
 export type SearchQuery<T> = Search & Partial<T>
+
+export interface RegisterQuery {
+  no: number[];
+  date: number
+}
+
+export interface RegisterAttendance {
+  owner: string;
+  name: string;
+  gender: string;
+  phoneNo: string;
+  churchNo: number;
+  date: number;
+  status: AttendanceStatus;
+}
+
+
+export interface AttendanceStatics {
+  male: number;
+  female: number;
+  total: number;
+}
+
+export interface TotalAttendanceStatics extends AttendanceStatics {
+  date: string;
+}
