@@ -12,7 +12,8 @@ export function renderEventBus<T extends BaseResponse>(
   ipc.send(EventBus.Request, ctx);
   console.log(ctx);
   return new Promise((resolve, rejects) => {
-      ipc.on(EventBus.Response, (event: Event, response: T) => {
+    ipc.on(EventBus.Response, (event: Event, response: T) => {
+      console.log(response);
         if (response.reqId === ctx.id) {
           return resolve(response);
         }

@@ -90,7 +90,7 @@
         color="primary"
         @click="markAll()"
       >
-        <v-icon>tick</v-icon>
+        <v-icon>check</v-icon>
       </v-btn>
 
     </v-container>

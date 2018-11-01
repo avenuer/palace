@@ -66,7 +66,7 @@ export default class MemberProfilePage extends Vue {
   async deleteMember(member: Member) {
     console.log('delete', member.id);
     const { data, error } = await deleteApiFactory(EntityModelNames.Member, member.id as string);
-    if (data) {
+    if (!data && !error) {
       this.$notify({ title: 'Deleted Member Details', type: 'success', text: `successfully Deleted member details` });
       if (this.image) { 
         return this.deleteImage(this.image.id as string);
@@ -83,7 +83,8 @@ export default class MemberProfilePage extends Vue {
   /** deletes the image withthe id from the database */
   async deleteImage(id: string) {
     const { data, error } = await deleteApiFactory(EntityModelNames.Image, id);
-    if (data) {
+    console.log({ data, error })
+    if (!data && !error) {
       this.$notify({ title: 'Deleted Image Upload', type: 'success', text: `successfully Deleted member image upload` });
       this.navigateHome();
       return;
@@ -93,6 +94,7 @@ export default class MemberProfilePage extends Vue {
       type: "error",
       text: `error while member image upload`
     });
+    this.navigateHome();
   }
 
   /** changes the page to admin base page */

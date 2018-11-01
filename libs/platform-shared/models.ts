@@ -36,3 +36,13 @@ export interface Image extends Partial<BaseModel> {
     owner: string;
     link: string;
 }
+
+
+export interface Organization extends Partial<BaseModel> {
+  name: string;
+  email: string;
+  phoneNo: string;
+  address: string;
+  state: string;
+  town: string;
+}
