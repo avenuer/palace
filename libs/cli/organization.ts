@@ -14,7 +14,7 @@ const DB_NAME = "liensces.json";
 // }
 export enum Liensce {
   Algorithm = 'aes192',
-  Password = '1Abiodun',
+  Password = 'random+passkey',
 }
 
 
