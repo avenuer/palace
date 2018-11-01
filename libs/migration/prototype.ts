@@ -9,8 +9,8 @@ import {
 import { defaultPreInsert } from "@elizer/rxdb";
 import { dialog, BrowserWindow } from "electron";
 import { join } from "path";
-import { EventEmitter } from "events";
 import { promisify } from "util";
+import { EventEmitter } from "events";
 
 enum MigratorEvents {
   Prototype = "migrate prototype"

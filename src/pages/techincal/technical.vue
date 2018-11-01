@@ -2,9 +2,17 @@
 <!-- This is an alternative way to define the Hello component using decorators -->
 
 <template>
-  <v-layout align-center>
+  <v-layout align-center column>
+    <v-flex>
+        <v-select
+        v-model="selectedView"
+          :items="subViews"
+          label="Operation"
+        ></v-select>
+    </v-flex>
+      <migration-view v-if="selectedView === subViews[0]"></migration-view>
+      <liensce-view v-if="selectedView === subViews[1]"></liensce-view>
 
-    <migration-view></migration-view>
   </v-layout>
 </template>
 
@@ -12,16 +20,17 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { format, getMonth, getMilliseconds } from "date-fns";
 import MigrationView from "./child-views/migration.vue";
+import LiensceView from "./child-views/liensce.vue";
 
 @Component({
   components: {
-    MigrationView
+    MigrationView,
+    LiensceView
   }
 })
 export default class TechnicalPage extends Vue {
-  viewscount = 1;
-
-  selected = 1;
+  subViews = ['migration', 'liensce'];
+  selectedView = ''
 }
 </script>
 

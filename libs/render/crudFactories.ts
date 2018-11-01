@@ -15,7 +15,9 @@ import {
   RegisterQuery,
   RegisterAttendance,
   TotalAttendanceStatics,
-  Migration
+  Migration,
+  Security,
+  Organization
 } from "@elizer/shared";
 import { renderEventBus } from "./ipc.render";
 import { MembersAttendance } from "libs/followup/attendance";
@@ -96,3 +98,27 @@ export function migratePrototype() {
     apiFactory(Migration.Prototype, {}, {})
   );
 }
+
+export function setLiensce(key: string) {
+  return renderEventBus<OtherQueryResponse<boolean>>(
+    apiFactory(Security.SetLiensce, key, {})
+  );
+}
+
+export function decryptLiensce() {
+  return renderEventBus<OtherQueryResponse<Organization>>(
+    apiFactory(Security.DecryptLiensce, {}, {})
+  );
+}
+
+export function retrieveLiensce() {
+  return renderEventBus<OtherQueryResponse<Organization>>(
+    apiFactory(Security.RetrieveLiensce, {}, {})
+    );
+  }
+  
+  export function deleteLiensce() {
+    return renderEventBus<OtherQueryResponse<boolean>>(
+      apiFactory(Security.DeleteLiensce, {}, {})
+    );
+  }

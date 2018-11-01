@@ -216,7 +216,7 @@ export default class FollowUpAttendanceStatsPage extends Vue {
         {
           data: total,
           label: "total",
-          fillColor: 'red'
+          fillColor: '#b34343ef'
         }
       ]
     };

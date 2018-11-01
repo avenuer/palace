@@ -1,4 +1,4 @@
-import { ApiMethod, EntityModelNames, CrudMethod, ApiStatus, FollowUpStatic, AttendanceStatus, Migration } from "./constant";
+import { ApiMethod, EntityModelNames, CrudMethod, ApiStatus, FollowUpStatic, AttendanceStatus, Migration, Security } from "./constant";
 import * as uuid from "uuid/v1";
 import { Member } from "./models";
 
@@ -8,16 +8,18 @@ export interface BaseResponse {
   reqId: string;
 }
 
+type Method = ApiMethod | CrudMethod | FollowUpStatic | Migration | Security;
+
 export interface ApiFormat<T, K> {
   id: string;
-  method: ApiMethod | CrudMethod | FollowUpStatic | Migration;
+  method: Method;
   data: T;
   event: EventBus;
   headers: K;
 }
 
 export function apiFactory<T, K>(
-  method: ApiMethod | CrudMethod | FollowUpStatic | Migration,
+  method: Method,
   data: T,
   headers: K
 ): ApiFormat<T, K> {

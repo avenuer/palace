@@ -1,7 +1,18 @@
+export enum Platform {
+  Name = 'palace'
+}
+
 export enum EntityModelNames {
   Member = 'member',
   Attendance = 'attendance',
   Image = 'image',
+}
+
+export enum Security {
+  SetLiensce = 'set-liensce',
+  DeleteLiensce = 'delete-liensce',
+  RetrieveLiensce = 'retrieve-liensce',
+  DecryptLiensce = 'decrypt-liensce',
 }
 
 export enum AttendanceStatus {
@@ -11,9 +22,9 @@ export enum AttendanceStatus {
 
 export enum ApiMethod {
   GET = 'GET',
-  POST = 'GET',
-  PUT = 'GET',
-  DELETE = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
 }
 
 export enum ApiStatus {
