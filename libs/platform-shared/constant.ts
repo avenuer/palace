@@ -8,6 +8,13 @@ export enum EntityModelNames {
   Image = 'image',
 }
 
+export enum MemberCategories {
+  Adult = 'Adult',
+  Children = 'children',
+  Teenager = 'Teenager',
+  Youth = 'Youth',
+}
+
 export enum Security {
   SetLiensce = 'set-liensce',
   DeleteLiensce = 'delete-liensce',

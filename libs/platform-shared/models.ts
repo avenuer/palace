@@ -23,6 +23,7 @@ export interface Member extends Partial<BaseModel> {
   workAddress?: string;
   isVisitor: boolean;
   address: string;
+  category: string;
   churchNo: number;
 }
 

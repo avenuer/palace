@@ -4,13 +4,16 @@ import {
   Member,
   OtherQueryResponse,
   ApiFormat,
-  ApiStatus
+  ApiStatus,
+  MemberCategories,
+  Security
 } from "@elizer/shared";
 import { defaultPreInsert } from "@elizer/rxdb";
 import { dialog, BrowserWindow } from "electron";
 import { join } from "path";
 import { promisify } from "util";
 import { EventEmitter } from "events";
+import { retrieveLiensce } from "libs/security";
 
 enum MigratorEvents {
   Prototype = "migrate prototype"
@@ -71,8 +74,16 @@ migrator.on(MigratorEvents.Prototype, (db: OfflineDB) => {
         const dump = JSON.parse(
           await promisify(readFile)(join.apply(global, path), "utf8")
         );
-        const organzation = path[path.length - 1].split(".")[0].toString();
-        cleanAndMapDumps(dump, organzation).forEach(savePrototypeMembers(db));
+        const { data, error } = await retrieveLiensce({
+          id: "migrate-proto-id",
+          method: Security.RetrieveLiensce
+        } as any);
+        if (data) {
+          return cleanAndMapDumps(dump, data.id as string).forEach(
+            savePrototypeMembers(db)
+          );
+        }
+        throw new Error(error);
       } catch (error) {
         console.log(error);
         dialog.showErrorBox(
@@ -99,7 +110,7 @@ function savePrototypeMembers(db: OfflineDB) {
 
 function cleanAndMapDumps(dump: RootObject, organization: string) {
   return dump.rows
-    .filter(e => (!!Number(e.doc._id) && (e.doc.firstname || e.doc.lastname)))
+    .filter(e => !!Number(e.doc._id) && (e.doc.firstname || e.doc.lastname))
     .map(e => mapDocToMember(organization, e.doc));
 }
 
@@ -119,6 +130,7 @@ function mapDocToMember(organization: string, doc: Doc): Member {
     isVisitor: doc.vistor,
     month: doc.birthmonth,
     phoneNo: doc.phoneNo || "unspecified",
-    isStudent: doc.student
+    isStudent: doc.student,
+    category: MemberCategories.Adult
   };
 }
