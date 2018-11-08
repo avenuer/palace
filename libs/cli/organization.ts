@@ -3,7 +3,7 @@ import { defaultPreInsert } from "@elizer/rxdb";
 import { existsSync, readFileSync, mkdirSync, writeFileSync } from "fs";
 import { join } from "path";
 import { encryptLiensce } from "libs/security/liensce";
-import { encrypt } from "./rsa";
+import { encrypt } from "../security/cryto";
 
 const DB_PATH = join(process.cwd(), "database");
 const DB_NAME = "liensces.json";

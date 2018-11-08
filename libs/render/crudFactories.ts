@@ -17,7 +17,8 @@ import {
   TotalAttendanceStatics,
   Migration,
   Security,
-  Organization
+  Organization,
+  SelectDecryptedLiensce
 } from "@elizer/shared";
 import { renderEventBus } from "./ipc.render";
 import { MembersAttendance } from "libs/followup/attendance";
@@ -106,7 +107,7 @@ export function setLiensce(key: string) {
 }
 
 export function decryptLiensce() {
-  return renderEventBus<OtherQueryResponse<Organization>>(
+  return renderEventBus<OtherQueryResponse<SelectDecryptedLiensce>>(
     apiFactory(Security.DecryptLiensce, {}, {})
   );
 }

@@ -1,17 +1,15 @@
 import * as inquirer from "inquirer";
-import { genKeys, decrypt } from "./rsa";
+import { decrypt } from "../security/cryto";
 import { Organization } from "@elizer/shared";
 import { encryptOrg, Liensce } from "./organization";
 import { promisify } from "util";
 import { readFile } from "fs";
 import { join } from "path";
-import { decryptLiensce } from "libs/security/liensce";
 
 const inq = inquirer.createPromptModule();
 const seperator = new inquirer.Separator();
 
 enum Commands {
-  RSA = "rsa",
   Liensce = "liensce"
 }
 
@@ -21,11 +19,9 @@ async function conversation() {
       name: "operation",
       message: "enter the Elizer Cli operation",
       type: "list",
-      choices: [Commands.RSA, Commands.Liensce]
+      choices: [Commands.Liensce]
     });
     switch (conv.operation) {
-      case Commands.RSA:
-        return genRsa();
       case Commands.Liensce:
         return liensceOperation();
       default:
@@ -66,14 +62,6 @@ async function decryptRsa() {
   }
 }
 
-async function genRsa() {
-  const ans: any = await inq({
-    name: "path",
-    type: "input",
-    message: "enter the path to place the key pairs"
-  });
-  genKeys(ans.path);
-}
 
 async function generateLiensce() {
   const org: Organization = (await inq([

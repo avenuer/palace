@@ -1,5 +1,6 @@
 export * from './crudFactories';
 export * from './ipc.render';
+export * from './store-ops';
 
 export enum RouterNames {
     HomePage = 'Homepage',
