@@ -13,10 +13,12 @@ module.exports = {
   devtool: 'eval-source-map',
   // watch: true,
   output: {
-    path: path.resolve(__dirname, '..', 'dist'),
-    filename: 'electron-main.js'
+    path: path.resolve(__dirname, '..', 'dist', 'electron'),
+    filename: 'main.js'
   },
-  externals: [nodeExternals()],
+  externals: [
+    nodeExternals()
+  ],
   resolve: {
     extensions: ['.ts', '.js'],
     modules: ['node_modules'],

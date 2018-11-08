@@ -62,7 +62,8 @@ import { format, getMonth, getMilliseconds } from "date-fns";
 import {
   findMembersAttendance,
   FollowUpRoutesNames,
-  attendanceSumationStatics
+  attendanceSumationStatics,
+  OrgModuleGetters
 } from "libs/render";
 import {
   EntityModelNames,
@@ -136,7 +137,7 @@ export default class FollowUpAttendanceStatsPage extends Vue {
 
   async attendanceStatics(query: Partial<Member>, skip: number = 0) {
     try {
-      const resp = await attendanceSumationStatics(query, {
+      const resp = await attendanceSumationStatics({ ...query, organization: this.organization}, {
         skip
       });
       if (resp.data) {
@@ -220,6 +221,10 @@ export default class FollowUpAttendanceStatsPage extends Vue {
         }
       ]
     };
+  }
+
+  get organization() {
+    return this.$store.getters[OrgModuleGetters.orgId];
   }
 
   /** returns the remapped date details */

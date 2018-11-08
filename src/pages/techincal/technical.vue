@@ -31,6 +31,13 @@ import LiensceView from "./child-views/liensce.vue";
 export default class TechnicalPage extends Vue {
   subViews = ['migration', 'liensce'];
   selectedView = ''
+
+  mounted() {
+   const ops: string | null = this.$route.query['ops']; 
+   if (ops) {
+     this.selectedView = ops;
+   }
+  }
 }
 </script>
 

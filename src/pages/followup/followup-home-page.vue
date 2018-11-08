@@ -86,7 +86,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { format, getMonth, getMilliseconds } from "date-fns";
-import { findMembersAttendance, FollowUpRoutesNames } from "libs/render";
+import { findMembersAttendance, FollowUpRoutesNames, OrgModuleGetters } from "libs/render";
 import {
   EntityModelNames,
   Member,
@@ -146,7 +146,7 @@ export default class FollowUpHomePage extends Vue {
   ) {
     try {
       query.selectedDate = Number(format(this.selectedDate, "x"));
-      const resp = await findMembersAttendance(query, { skip });
+      const resp = await findMembersAttendance({ ...query, organization: this.organization }, { skip });
       if (resp.data) {
         this.members = resp.data;
         this.limit = resp.limit;
@@ -176,6 +176,10 @@ export default class FollowUpHomePage extends Vue {
       name: FollowUpRoutesNames.Profile,
       params: { id: member.id as string }
     });
+  }
+
+  get organization() {
+    return this.$store.getters[OrgModuleGetters.orgId];
   }
 
   /** return selected date for the calender */

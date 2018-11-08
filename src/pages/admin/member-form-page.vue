@@ -22,7 +22,8 @@ import {
   getApiFactory,
   AdminRoutesNames,
   findApiFactory,
-  updateApiFactory
+  updateApiFactory,
+  OrgModuleGetters
 } from "libs/render";
 import { Member, EntityModelNames, Image } from "@elizer/shared";
 import { genMember } from "@elizer/gen";
@@ -40,8 +41,6 @@ export default class MemberFormPage extends Vue {
   private image: string | undefined;
 
   private newChurchNo: number | undefined;
-
-  private organization = "RCCG-JESUS-PALACE-OYO-5";
 
   async saveUser($event: Partial<Member>) {
     $event.churchNo = $event.churchNo || this.newChurchNo;
@@ -142,6 +141,10 @@ export default class MemberFormPage extends Vue {
         text: `error setting getting a new churchNo for member`
       });
     }
+  }
+
+  get organization() {
+    return this.$store.getters[OrgModuleGetters.orgId];
   }
 
   mounted() {

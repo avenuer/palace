@@ -89,7 +89,8 @@ export type SearchQuery<T> = Search & Partial<T>
 
 export interface RegisterQuery {
   no: number[];
-  date: number
+  date: number;
+  organization: string;
 }
 
 export interface RegisterAttendance {
