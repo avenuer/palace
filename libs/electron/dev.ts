@@ -108,3 +108,9 @@ export async function devtools(browserWindow: BrowserWindow) {
   addExtension();
   shortcuts(browserWindow);
 }
+
+
+export function isDev() {
+  console.log( process.env.ELECTRON_IS_DEV)
+  return process.env.ELECTRON_IS_DEV === 'development';
+}

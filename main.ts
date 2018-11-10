@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import { eventBus } from "libs/electron/ipc";
-import { shortcuts } from "libs/electron/dev";
+import { shortcuts, isDev } from "libs/electron/dev";
+import { checkforUpdate } from "libs/electron/update";
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -13,12 +14,15 @@ function createWindow() {
   win.setMenu(null);
 
   // and load the index.html of the app.
-  // win.loadFile("index.html");
-  win.loadURL(`http://localhost:3000`);
+  win.loadFile('./dist/index.html');
+  // win.loadFile(join(process.cwd(), 'dist', 'index.html'));
+  // win.loadURL(`http://localhost:3000`);
 
   // Open the DevTools.
-  win.webContents.openDevTools();
-  // register devtools and shortcuts
+  if (isDev()) {
+    // register devtools and shortcuts
+    win.webContents.openDevTools();
+  }
   shortcuts(win);
 
   /** show but hide if page not rendered */
@@ -36,6 +40,12 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
   });
+
+  win.on('show', () => {
+    setTimeout(() => {
+      checkforUpdate(win as BrowserWindow);
+    }, 1000 * 60 * 3);
+  })
 }
 
 // This method will be called when Electron has finished

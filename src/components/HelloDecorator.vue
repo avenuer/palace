@@ -25,7 +25,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import ElizerSideBar from "./root/sidebar.vue";
-import { retrieveLiensce, RouterNames, OrgModuleMutations } from "libs/render";
+import { retrieveLiensce, RouterNames, OrgModuleMutations, AdminRoutesNames } from "libs/render";
 
 @Component({
   components: {
@@ -45,6 +45,7 @@ export default class HelloDecorator extends Vue {
         title: "Organization Liensce",
         text: "successfully retreive orgainzational liensce"
       });
+      this.$router.push({name: AdminRoutesNames.Home})
       return;
     }
     this.$notify({
@@ -57,7 +58,6 @@ export default class HelloDecorator extends Vue {
 
   mounted() {
     this.confirmLiensce();
-    this.$store.subscribe((m, s) => console.log(m, s.valueOf()));
   }
 
   

@@ -105,6 +105,10 @@ export interface RegisterAttendance {
 
 
 export interface AttendanceStatics {
+  adults: number;
+  children: number;
+  teenager: number;
+  youth: number;
   male: number;
   female: number;
   total: number;
