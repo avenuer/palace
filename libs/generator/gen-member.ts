@@ -1,5 +1,5 @@
 import * as faker from 'faker';
-import { Member } from '@elizer/shared';
+import { Member, MemberCategories } from '@elizer/shared';
 import { format, getDay, getMonth } from 'date-fns';
 
 export function list<T> (method: Function, count = 5)  {
@@ -35,6 +35,7 @@ export function genMember(): Member {
         school: company.name,
         phoneNo: phone,
         updatedAt: faker.date.past().getMilliseconds(),
-        workAddress: company.name
+        workAddress: company.name,
+        category: MemberCategories.Adult
     }
 }

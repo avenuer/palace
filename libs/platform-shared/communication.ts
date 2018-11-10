@@ -1,6 +1,6 @@
 import { ApiMethod, EntityModelNames, CrudMethod, ApiStatus, FollowUpStatic, AttendanceStatus, Migration, Security } from "./constant";
 import * as uuid from "uuid/v1";
-import { Member } from "./models";
+import { Member, Organization } from "./models";
 
 export interface BaseResponse {
   time: number;
@@ -89,7 +89,8 @@ export type SearchQuery<T> = Search & Partial<T>
 
 export interface RegisterQuery {
   no: number[];
-  date: number
+  date: number;
+  organization: string;
 }
 
 export interface RegisterAttendance {
@@ -104,6 +105,10 @@ export interface RegisterAttendance {
 
 
 export interface AttendanceStatics {
+  adults: number;
+  children: number;
+  teenager: number;
+  youth: number;
   male: number;
   female: number;
   total: number;
@@ -111,4 +116,9 @@ export interface AttendanceStatics {
 
 export interface TotalAttendanceStatics extends AttendanceStatics {
   date: string;
+}
+
+export interface SelectDecryptedLiensce {
+  decrypted: Organization;
+  key: string;
 }

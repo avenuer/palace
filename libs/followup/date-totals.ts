@@ -8,7 +8,8 @@ import {
   ApiStatus,
   DateFormat,
   TotalAttendanceStatics,
-  AttendanceStatics
+  AttendanceStatics,
+  MemberCategories
 } from "@elizer/shared";
 import { DBKollections } from "libs/rxdb/interface";
 import { fQD } from "libs/routes/models/find-search";
@@ -66,14 +67,9 @@ interface MemberMap {
  * @param {Partial<FindQueryParams>} [fqp={}]
  * @returns
  */
-async function mapMember(
-  koll: RxCollection<Member>,
-  query: Partial<Member>
-) {
+async function mapMember(koll: RxCollection<Member>, query: Partial<Member>) {
   const holder: MemberMap = {};
-  const members = await koll
-    .find(query)
-    .exec();
+  const members = await koll.find(query).exec();
   members.forEach(m => {
     holder[m.id as string] = m.toJSON();
   });
@@ -115,16 +111,16 @@ async function dateAttendanceTotals(
 function attendanceMapToArray(
   attendance: TotalAttendaceMap
 ): TotalAttendanceStatics[] {
-  return Object.keys(attendance).map((e) => {
+  return Object.keys(attendance).map(e => {
     return {
       ...attendance[e as any],
       date: format(Number(e), DateFormat)
-    }
-  })
+    };
+  });
 }
 
 /**
- * does addition base on gender of the members
+ * does collation of the members statics
  *
  * @param {AttendanceStatics} dateStat
  * @param {Member} member
@@ -135,13 +131,71 @@ function calculateStat(
   member: Member
 ): AttendanceStatics {
   if (dateStat) {
-    if (member.gender.toLowerCase() === "female") {
-      dateStat.female += 1;
-    } else {
-      dateStat.male += 1;
-    }
-    dateStat.total += 1;
-    return dateStat;
+    let stats = genderStat(dateStat, member);
+    stats = categoryStat(stats, member);
+    return stats;
   }
-  return calculateStat({ total: 0, male: 0, female: 0 }, member);
+  return calculateStat(
+    {
+      total: 0,
+      male: 0,
+      female: 0,
+      adults: 0,
+      children: 0,
+      teenager: 0,
+      youth: 0
+    },
+    member
+  );
+}
+
+
+/**
+ * calculates the gender statics
+ *
+ * @param {AttendanceStatics} dateStat
+ * @param {Member} member
+ * @returns {AttendanceStatics}
+ */
+function genderStat(
+  dateStat: AttendanceStatics,
+  member: Member
+): AttendanceStatics {
+  if (member.gender.toLowerCase() === "female") {
+    dateStat.female += 1;
+  } else {
+    dateStat.male += 1;
+  }
+  return dateStat;
+}
+
+
+/**
+ * calculates the categories statics
+ *
+ * @param {AttendanceStatics} dateStat
+ * @param {Member} member
+ * @returns {AttendanceStatics}
+ */
+function categoryStat(
+  dateStat: AttendanceStatics,
+  member: Member
+): AttendanceStatics {
+  switch (member.category) {
+    case MemberCategories.Adult: {
+      dateStat.adults += 1;
+    }
+    case MemberCategories.Youth: {
+      dateStat.youth += 1;
+    }
+    case MemberCategories.Teenager: {
+      dateStat.teenager += 1;
+    }
+    case MemberCategories.Children: {
+      dateStat.children += 1;
+    }
+    default:
+      break;
+  }
+  return dateStat;
 }

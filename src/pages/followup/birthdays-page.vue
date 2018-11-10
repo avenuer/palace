@@ -70,7 +70,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { format, getMonth } from "date-fns";
-import { findApiFactory, AdminRoutesNames } from "libs/render";
+import { findApiFactory, AdminRoutesNames, OrgModuleGetters } from "libs/render";
 import {
   EntityModelNames,
   Member,
@@ -121,7 +121,7 @@ export default class BirthDayPage extends Vue {
     this.skip = skip;
     const res = await findApiFactory<Member, Partial<Member>>(
       EntityModelNames.Member,
-      { month },
+      { month, organization: this.organization },
       { skip }
     );
     if (res.data) {
@@ -143,6 +143,10 @@ export default class BirthDayPage extends Vue {
       name: AdminRoutesNames.MemberProfile,
       params: { id: member.id as string }
     });
+  }
+
+  get organization() {
+    return this.$store.getters[OrgModuleGetters.orgId];
   }
 
   get picker() {

@@ -57,7 +57,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import ElizerMemberBiodata from "../../shared/member/member-profile.vue";
-import { findApiFactory, AdminRoutesNames } from "libs/render";
+import { findApiFactory, AdminRoutesNames, OrgModuleGetters } from "libs/render";
 import { EntityModelNames, Member, FindQueryParams, SearchQuery } from "@elizer/shared";
 import { TableHeader, TablePagination } from "@elizer/members";
 
@@ -101,7 +101,7 @@ export default class AdminHomePage extends Vue {
   ) {
     const response = await findApiFactory<Member, Partial<Member>>(
       EntityModelNames.Member,
-      query,
+      { ...query, organization: this.$store.getters[OrgModuleGetters.orgId]},
       custom
     );
     if (response.error) {

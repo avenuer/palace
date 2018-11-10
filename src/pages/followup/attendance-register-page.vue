@@ -108,7 +108,8 @@ import {
   findApiFactory,
   createApiFactory,
   registerHistory,
-  FollowUpRoutesNames
+  FollowUpRoutesNames,
+OrgModuleGetters
 } from "libs/render";
 import {
   Attendance,
@@ -194,8 +195,7 @@ export default class AttendanceRegisterPage extends Vue {
         owner: member.owner,
         date: this.selectedDate,
         attendance: AttendanceStatus.Present,
-        // TODO: overide organization to be dynamic for individual organizations
-        organization: `RCCG Jesus Palace`
+        organization: this.organization
       });
       if (attendance.data) {
         //  handle success
@@ -225,7 +225,7 @@ export default class AttendanceRegisterPage extends Vue {
   // get the members date history which is the owner of the userNos
   async getMembersHistory(nos: number[], date: number) {
     // futher expansion request orginzationId for the memebr before query
-    const res = await registerHistory({ date, no: nos });
+    const res = await registerHistory({ date, no: nos, organization: this.organization});
     if (res.data) {
       this.members = res.data;
       this.$notify({
@@ -246,7 +246,7 @@ export default class AttendanceRegisterPage extends Vue {
   async getAttendance(member: Member) {
     const attendance = await findApiFactory<Attendance, Partial<Attendance>>(
       EntityModelNames.Attendance,
-      { owner: member.id, date: this.selectedDate }
+      { owner: member.id, date: this.selectedDate, organization: this.organization }
     );
     if (attendance.data && attendance.data.length > 0) {
       throw userAlreadyMarkedError;
@@ -271,6 +271,10 @@ export default class AttendanceRegisterPage extends Vue {
         textstatus: e.status === AttendanceStatus.Present ? "Present" : "Absent"
       };
     });
+  }
+
+  get organization() {
+    return this.$store.getters[OrgModuleGetters.orgId];
   }
 
   get picker() {

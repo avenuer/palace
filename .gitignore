@@ -1,5 +1,7 @@
 dist/
 node_modules/
+database/
+build/
 
 yarn-error.log
 typings
@@ -7,3 +9,4 @@ typings
 test.ts
 src/pages/techincal/kep
 libs/cli/palace.txt
+electron-builder-publish.yml

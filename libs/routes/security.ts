@@ -19,35 +19,17 @@ export const securityRoutes = [
   DecryptLiensce
 ];
 
-export async function securityRoute(
-  ctx: ApiFormat<any, any>
-): Promise<OtherQueryResponse<any>> {
-  try {
-    let res: any;
-    switch (ctx.method) {
-      case SetLiensce:
-        res = await setLiensce(ctx.data);
-      case RetrieveLiensce:
-        res = await retrieveLiensce();
-      case DeleteLiensce:
-        res = await deleteLiensce();
-      case DecryptLiensce:
-        res = await selectDecryptLiensce(ctx);
-      default:
-        break;
-    }
-    return {
-      data: res,
-      reqId: ctx.id,
-      status: ApiStatus.Success,
-      time: Date.now()
-    };
-  } catch (error) {
-    return {
-      error: (error as Error).message,
-      reqId: ctx.id,
-      status: ApiStatus.Success,
-      time: Date.now()
-    };
+export async function securityRoute(ctx: ApiFormat<any, any>) {
+  switch (ctx.method) {
+    case SetLiensce:
+      return await setLiensce(ctx);
+    case RetrieveLiensce:
+      return await retrieveLiensce(ctx);
+    case DeleteLiensce:
+      return await deleteLiensce(ctx);
+    case DecryptLiensce:
+      return await selectDecryptLiensce(ctx);
+    default:
+      break;
   }
 }

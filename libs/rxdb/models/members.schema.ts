@@ -56,6 +56,9 @@ export const memberSchema = {
     address: {
       type: 'string',
     },
+    category: {
+      type: 'string',
+    },
     churchNo: {
       type: 'number',
     },

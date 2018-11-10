@@ -1,23 +1,17 @@
-import { readFile } from "fs";
-import { join } from "path";
-import { promisify } from "util";
 import { Organization } from "@elizer/shared";
-import * as NodeRSA from "node-rsa";
+import { decrypt, encrypt } from "./cryto";
+
+enum Liensce {
+  Algorithm = "aes192",
+  Password = "random+passkey"
+}
+
+const { Algorithm, Password } = Liensce;
 
 export async function encryptLiensce(org: Organization) {
-  const privateKey = await promisify(readFile)(
-    join(process.cwd(), "keys", "private.key"),
-    "utf8"
-  );
-  return new NodeRSA(privateKey).encrypt(JSON.stringify(org), "hex");
+  return encrypt(Algorithm, Password)(JSON.stringify(org));
 }
 
 export async function decryptLiensce(key: string) {
-  const publicKey = await promisify(readFile)(
-    join(process.cwd(), "keys", "public.key"),
-    "utf8"
-  );
-  return JSON.parse(
-    new NodeRSA(publicKey).decrypt(key, "hex")
-  ) as Organization;
+  return JSON.parse(decrypt(Algorithm, Password)(key)) as Organization;
 }

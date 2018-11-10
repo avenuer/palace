@@ -1,4 +1,4 @@
-import { AttendanceStatus } from './constant';
+import { AttendanceStatus, MemberCategories } from './constant';
 
 export interface BaseModel {
   id: string;
@@ -23,6 +23,7 @@ export interface Member extends Partial<BaseModel> {
   workAddress?: string;
   isVisitor: boolean;
   address: string;
+  category: MemberCategories;
   churchNo: number;
 }
 

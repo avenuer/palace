@@ -33,7 +33,7 @@ export interface Log {
  * @class LoggerService
  */
 export class Logger {
-  private logger: any; // : Logger;
+  private logger: pino.Logger; // : Logger;
 
   constructor(public loggerNameSpace: string, loglevel?: string) {
     this.logger = (pino as any)({

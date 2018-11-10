@@ -25,6 +25,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import ElizerSideBar from "./root/sidebar.vue";
+import { retrieveLiensce, RouterNames, OrgModuleMutations, AdminRoutesNames } from "libs/render";
 
 @Component({
   components: {
@@ -32,9 +33,34 @@ import ElizerSideBar from "./root/sidebar.vue";
   }
 })
 export default class HelloDecorator extends Vue {
-
   private menu = false;
 
+  async confirmLiensce() {
+    const { data, error } = await retrieveLiensce();
+    if (data) {
+      // set-store
+      this.$store.commit(OrgModuleMutations.SetOrg, data);
+      this.$notify({
+        type: "success",
+        title: "Organization Liensce",
+        text: "successfully retreive orgainzational liensce"
+      });
+      this.$router.push({name: AdminRoutesNames.Home})
+      return;
+    }
+    this.$notify({
+      type: "failure",
+      title: "Liensce",
+      text: error|| "successfully retreive orgainzational liensce"
+    });
+    this.$router.push({ name: RouterNames.TechnicalPage, query: { ops: 'liensce' }});
+  }
+
+  mounted() {
+    this.confirmLiensce();
+  }
+
+  
 }
 </script>
 
